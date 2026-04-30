@@ -1,0 +1,512 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Distributed Blood Donation System</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div id="toast" class="toast" role="status"></div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.75C9.2 6.2 6.25 9.55 6.25 13.25A5.75 5.75 0 0 0 12 19a5.75 5.75 0 0 0 5.75-5.75C17.75 9.55 14.8 6.2 12 2.75Z"/>
+            <path d="M9.6 13.2c.25 1.25 1.2 2.15 2.55 2.15"/>
+          </svg>
+        </div>
+        <div>
+          <h1>BloodNet</h1>
+          <p>Distributed Blood Donation</p>
+        </div>
+      </div>
+
+      <div class="nav-section-label">Main</div>
+      <nav class="nav">
+        <button class="nav-item active" data-page="overview">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 13h7V4H4v9Zm9 7h7V4h-7v16ZM4 20h7v-5H4v5Z"/></svg>
+          </span>
+          <span>لوحة التحكم</span>
+        </button>
+
+        <button class="nav-item" data-page="donors">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24"><path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0ZM4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+          </span>
+          <span>المتبرعون</span>
+        </button>
+
+        <button class="nav-item" data-page="requests">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24"><path d="M7 3h10v4H7V3Zm-2 6h14v12H5V9Zm4 4h6M9 17h6"/></svg>
+          </span>
+          <span>طلبات الدم</span>
+        </button>
+      </nav>
+
+      <div class="nav-section-label">Distributed System</div>
+      <nav class="nav">
+        <button class="nav-item" data-page="workflow">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 6h4v4H5V6Zm10 0h4v4h-4V6ZM5 14h4v4H5v-4Zm10 0h4v4h-4v-4ZM9 8h6M9 16h6M7 10v4M17 10v4"/></svg>
+          </span>
+          <span>مسار النظام</span>
+        </button>
+
+        <button class="nav-item" data-page="notifications">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9Zm3.5 11a2.5 2.5 0 0 0 5 0"/></svg>
+          </span>
+          <span>الإشعارات</span>
+        </button>
+
+        <button class="nav-item" data-page="system">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16v10H4V6Zm4 14h8M10 16v4m4-4v4"/></svg>
+          </span>
+          <span>حالة الخدمات</span>
+        </button>
+
+        <button class="nav-item" data-page="evidence">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24"><path d="M7 3h10l3 3v15H7V3Zm10 0v4h4M10 11h7M10 15h7M10 19h4"/></svg>
+          </span>
+          <span>أدلة التنفيذ</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-card">
+        <div class="status-dot"></div>
+        <div>
+          <strong>Gateway Online</strong>
+          <small>localhost:3000</small>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="page-heading">
+          <div class="breadcrumb">BloodNet / <span id="breadcrumbPage">Overview</span></div>
+          <h2 id="pageTitle">لوحة التحكم التشغيلية</h2>
+          <p id="pageSubtitle">ملخص عملي للنظام الموزع وخدماته الأساسية.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="btn btn-soft" id="refreshBtn">
+            <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v6h-6"/></svg>
+            تحديث
+          </button>
+          <button class="btn btn-danger" id="quickCriticalBtn">
+            <svg viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3Zm0 6v5m0 4h.01"/></svg>
+            طلب حرج
+          </button>
+        </div>
+      </header>
+
+      <section class="page active" id="overviewPage">
+        <div class="hero">
+          <div class="hero-content">
+            <span class="label">Distributed Emergency Workflow</span>
+            <h3>إدارة طلبات الدم الحرجة عبر خدمات موزعة</h3>
+            <p>
+              يتم استقبال الطلب عبر API Gateway، ثم تنفيذ استدعاء بعيد إلى خدمة المتبرعين،
+              وبعدها نشر حدث عبر RabbitMQ وإرسال تنبيه UDP Multicast لعقد الطوارئ.
+            </p>
+            <div class="hero-actions">
+              <button class="btn btn-danger" id="heroCreateRequestBtn">تشغيل سيناريو طلب حرج</button>
+              <button class="btn btn-soft" data-jump="workflow">عرض المسار الموزع</button>
+            </div>
+          </div>
+
+          <div class="system-map">
+            <div class="system-node gateway">API Gateway</div>
+            <div class="system-link"></div>
+            <div class="system-node request">Request Service</div>
+            <div class="system-link"></div>
+            <div class="system-node donor">Donor Service</div>
+            <div class="system-row">
+              <div class="system-node broker">RabbitMQ</div>
+              <div class="system-node multicast">UDP Multicast</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <article class="metric-card">
+            <div class="metric-icon red"><svg viewBox="0 0 24 24"><path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0ZM4.5 20a7.5 7.5 0 0 1 15 0"/></svg></div>
+            <div>
+              <small>Available Donors</small>
+              <strong id="kpiDonors">0</strong>
+              <span>donor_db</span>
+            </div>
+          </article>
+
+          <article class="metric-card">
+            <div class="metric-icon amber"><svg viewBox="0 0 24 24"><path d="M7 3h10v4H7V3Zm-2 6h14v12H5V9Zm4 4h6M9 17h6"/></svg></div>
+            <div>
+              <small>Blood Requests</small>
+              <strong id="kpiRequests">0</strong>
+              <span>request_db</span>
+            </div>
+          </article>
+
+          <article class="metric-card">
+            <div class="metric-icon blue"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9Z"/></svg></div>
+            <div>
+              <small>Notifications</small>
+              <strong id="kpiNotifications">0</strong>
+              <span>RabbitMQ consumer</span>
+            </div>
+          </article>
+
+          <article class="metric-card">
+            <div class="metric-icon green"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg></div>
+            <div>
+              <small>System Status</small>
+              <strong id="kpiSystem">...</strong>
+              <span>health checks</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="layout-2">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>آخر الطلبات</h3>
+                <p>طلبات الدم المحفوظة في request_db.</p>
+              </div>
+              <button class="btn btn-mini" data-jump="requests">عرض الكل</button>
+            </div>
+            <div class="table-shell">
+              <table>
+                <thead>
+                  <tr>
+                    <th>المريض</th>
+                    <th>المستشفى</th>
+                    <th>الفصيلة</th>
+                    <th>الأولوية</th>
+                    <th>الحالة</th>
+                  </tr>
+                </thead>
+                <tbody id="overviewRequests"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>حالة الخدمات</h3>
+                <p>ملخص سريع لحالة الخدمات المتصلة عبر Gateway.</p>
+              </div>
+              <button class="btn btn-mini" data-jump="system">تفاصيل</button>
+            </div>
+            <div id="overviewHealth" class="health-list"></div>
+          </section>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Activity Timeline</h3>
+              <p>آخر نشاط تم تنفيذه في النظام.</p>
+            </div>
+          </div>
+          <div id="activityTimeline" class="timeline"></div>
+        </section>
+      </section>
+
+      <section class="page" id="donorsPage">
+        <div class="section-header">
+          <div>
+            <span class="label">Donor Operations</span>
+            <h3>إدارة المتبرعين</h3>
+            <p>بحث وفلترة وإضافة متبرعين مع حفظ دائم في MySQL.</p>
+          </div>
+          <button class="btn btn-primary" id="openDonorModalBtn">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14m7-7H5"/></svg>
+            إضافة متبرع
+          </button>
+        </div>
+
+        <div class="filter-toolbar">
+          <div class="field field-wide">
+            <label>بحث</label>
+            <input id="donorTextFilter" placeholder="الاسم، الهاتف، المدينة" />
+          </div>
+          <div class="field">
+            <label>فصيلة الدم</label>
+            <select id="donorBloodFilter">
+              <option value="">كل الفصائل</option>
+              <option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option>
+              <option>O+</option><option>O-</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>المدينة</label>
+            <input id="donorCityFilter" placeholder="Sanaa" />
+          </div>
+          <button class="btn btn-dark" id="applyDonorFilterBtn">تطبيق</button>
+          <button class="btn btn-soft" id="resetDonorFilterBtn">إعادة ضبط</button>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>قائمة المتبرعين</h3>
+              <p id="donorsSummary">جاري التحميل...</p>
+            </div>
+          </div>
+          <div class="table-shell">
+            <table>
+              <thead>
+                <tr>
+                  <th>المتبرع</th>
+                  <th>الفصيلة</th>
+                  <th>المدينة</th>
+                  <th>الهاتف</th>
+                  <th>الحالة</th>
+                </tr>
+              </thead>
+              <tbody id="donorsTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="page" id="requestsPage">
+        <div class="section-header">
+          <div>
+            <span class="label">Emergency Requests</span>
+            <h3>طلبات الدم</h3>
+            <p>إنشاء طلبات دم وتشغيل Remote Invocation وRabbitMQ وUDP Multicast.</p>
+          </div>
+          <button class="btn btn-danger" id="openRequestModalBtn">
+            <svg viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3Z"/></svg>
+            إنشاء طلب دم
+          </button>
+        </div>
+
+        <div class="filter-toolbar">
+          <div class="field field-wide">
+            <label>بحث</label>
+            <input id="requestTextFilter" placeholder="المريض، المستشفى، المدينة" />
+          </div>
+          <div class="field">
+            <label>الأولوية</label>
+            <select id="requestUrgencyFilter">
+              <option value="">كل الأولويات</option>
+              <option>LOW</option><option>MEDIUM</option><option>HIGH</option><option>CRITICAL</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>الحالة</label>
+            <select id="requestStatusFilter">
+              <option value="">كل الحالات</option>
+              <option>PENDING</option><option>MATCHED</option><option>COMPLETED</option><option>CANCELLED</option>
+            </select>
+          </div>
+          <button class="btn btn-dark" id="applyRequestFilterBtn">تطبيق</button>
+          <button class="btn btn-soft" id="resetRequestFilterBtn">إعادة ضبط</button>
+        </div>
+
+        <div class="layout-2 wide-left">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>قائمة الطلبات</h3>
+                <p id="requestsSummary">جاري التحميل...</p>
+              </div>
+            </div>
+            <div class="table-shell">
+              <table>
+                <thead>
+                  <tr>
+                    <th>المريض</th>
+                    <th>المستشفى</th>
+                    <th>الفصيلة</th>
+                    <th>الأولوية</th>
+                    <th>الحالة</th>
+                    <th>التاريخ</th>
+                  </tr>
+                </thead>
+                <tbody id="requestsTable"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>نتيجة آخر Workflow</h3>
+                <p>إثبات Remote Invocation + RabbitMQ + Multicast.</p>
+              </div>
+            </div>
+            <pre id="lastWorkflowResult" class="code-block">لم يتم تنفيذ عملية جديدة من الواجهة بعد.</pre>
+          </section>
+        </div>
+      </section>
+
+      <section class="page" id="workflowPage">
+        <div class="section-header">
+          <div>
+            <span class="label">Distributed Architecture</span>
+            <h3>مسار النظام الموزع</h3>
+            <p>تمثيل بصري للمتطلبات الأساسية في تكليف الأنظمة الموزعة.</p>
+          </div>
+          <button class="btn btn-danger" id="workflowRunBtn">تشغيل سيناريو حرج</button>
+        </div>
+
+        <div class="workflow-board">
+          <div class="workflow-step">
+            <span>01</span>
+            <h4>API Gateway</h4>
+            <p>يستقبل الطلب ويوجهه إلى Request Service.</p>
+            <strong>HTTP :3000</strong>
+          </div>
+          <div class="workflow-step">
+            <span>02</span>
+            <h4>Request Service</h4>
+            <p>يحفظ الطلب في MySQL ويبدأ مسار المعالجة.</p>
+            <strong>request_db</strong>
+          </div>
+          <div class="workflow-step">
+            <span>03</span>
+            <h4>Remote Invocation</h4>
+            <p>استدعاء Donor Service للبحث عن متبرعين مطابقين.</p>
+            <strong>HTTP GET /donors/search</strong>
+          </div>
+          <div class="workflow-step">
+            <span>04</span>
+            <h4>RabbitMQ</h4>
+            <p>نشر حدث blood_request.created للاتصال غير المباشر.</p>
+            <strong>Topic Exchange</strong>
+          </div>
+          <div class="workflow-step">
+            <span>05</span>
+            <h4>Notification Service</h4>
+            <p>استهلاك الحدث وإنشاء إشعار.</p>
+            <strong>Consumer Queue</strong>
+          </div>
+          <div class="workflow-step">
+            <span>06</span>
+            <h4>UDP Multicast</h4>
+            <p>إرسال تنبيه عاجل لعقد الطوارئ.</p>
+            <strong>239.10.10.10:5005</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="notificationsPage">
+        <div class="section-header">
+          <div>
+            <span class="label">Event Feed</span>
+            <h3>الإشعارات</h3>
+            <p>الإشعارات الناتجة عن أحداث RabbitMQ.</p>
+          </div>
+          <button class="btn btn-soft" id="reloadNotificationsBtn">تحديث</button>
+        </div>
+
+        <div id="notificationsGrid" class="notification-grid"></div>
+      </section>
+
+      <section class="page" id="systemPage">
+        <div class="section-header">
+          <div>
+            <span class="label">Service Health</span>
+            <h3>حالة الخدمات</h3>
+            <p>فحص حالة الخدمات المستقلة داخل Docker Network.</p>
+          </div>
+          <button class="btn btn-soft" id="reloadHealthBtn">إعادة الفحص</button>
+        </div>
+
+        <div id="healthGrid" class="service-grid"></div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>المكونات التقنية</h3>
+              <p>ملخص مكونات النظام التي تغطي متطلبات التكليف.</p>
+            </div>
+          </div>
+          <div class="component-grid">
+            <div><strong>API Gateway</strong><span>Routing + Unified Entry Point</span></div>
+            <div><strong>Remote Invocation</strong><span>Request → Donor Service</span></div>
+            <div><strong>RabbitMQ</strong><span>Indirect Pub/Sub Communication</span></div>
+            <div><strong>UDP Socket</strong><span>Multicast Emergency Alerts</span></div>
+            <div><strong>MySQL</strong><span>Persistence for Donors and Requests</span></div>
+            <div><strong>Docker Compose</strong><span>Distributed Local Deployment</span></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="page" id="evidencePage">
+        <div class="section-header">
+          <div>
+            <span class="label">Implementation Evidence</span>
+            <h3>أدلة التنفيذ</h3>
+            <p>صفحة مخصصة لدعم التقرير والمناقشة العملية.</p>
+          </div>
+          <button class="btn btn-soft" id="copyEvidenceBtn">نسخ ملخص الأدلة</button>
+        </div>
+
+        <div class="evidence-grid">
+          <article class="evidence-card">
+            <h4>API Gateway</h4>
+            <p>جميع الطلبات تمر عبر localhost:3000.</p>
+            <code>GET /api/system/health</code>
+          </article>
+          <article class="evidence-card">
+            <h4>Remote Invocation</h4>
+            <p>Request Service يستدعي Donor Service للبحث عن المتبرعين.</p>
+            <code>GET /donors/search</code>
+          </article>
+          <article class="evidence-card">
+            <h4>RabbitMQ Pub/Sub</h4>
+            <p>نشر حدث عند إنشاء طلب دم واستهلاكه في Notification Service.</p>
+            <code>blood_request.created</code>
+          </article>
+          <article class="evidence-card">
+            <h4>UDP Multicast</h4>
+            <p>إرسال تنبيه عند الطلبات الحرجة إلى مجموعة multicast.</p>
+            <code>239.10.10.10:5005</code>
+          </article>
+          <article class="evidence-card">
+            <h4>MySQL Persistence</h4>
+            <p>حفظ المتبرعين والطلبات في قواعد منفصلة.</p>
+            <code>donor_db / request_db</code>
+          </article>
+          <article class="evidence-card">
+            <h4>Docker Deployment</h4>
+            <p>تشغيل الخدمات كحاويات مستقلة ضمن شبكة واحدة.</p>
+            <code>docker compose up --build</code>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal">
+      <header class="modal-head">
+        <div>
+          <h3 id="modalTitle">Modal Title</h3>
+          <p id="modalSubtitle">Modal subtitle</p>
+        </div>
+        <button class="icon-button" id="closeModalBtn" aria-label="Close">×</button>
+      </header>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

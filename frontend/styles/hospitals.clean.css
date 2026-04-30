@@ -1,0 +1,432 @@
+﻿/* =========================================================
+   Hospitals Clean Scoped Styles
+   Isolated to hospitals page only
+   ========================================================= */
+
+#hospitalsPage,
+#hospitalsPage * {
+  box-sizing: border-box;
+}
+
+#hospitalsPage.hospitals-final-page {
+  width: min(100%, 1180px);
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Header */
+#hospitalsPage .hospitals-final-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+  margin: 0;
+}
+
+#hospitalsPage .hospitals-final-header > div:first-child {
+  text-align: right;
+}
+
+#hospitalsPage .hospitals-final-header h1 {
+  margin: 0;
+  font-size: 40px;
+  line-height: 1.15;
+  font-weight: 900;
+  color: #111827;
+}
+
+#hospitalsPage .hospitals-final-header p {
+  margin: 8px 0 0;
+  font-size: 15px;
+  color: #6b7280;
+}
+
+#hospitalsPage .page-actions {
+  margin: 0;
+}
+
+#hospitalsPage #openHospitalModalBtn {
+  min-width: 168px;
+  height: 48px;
+  border: 0;
+  border-radius: 14px;
+  background: #c9473b;
+  color: #fff;
+  font-weight: 900;
+  font-size: 16px;
+  padding: 0 18px;
+  box-shadow: 0 14px 28px rgba(201, 71, 59, 0.20);
+  cursor: pointer;
+}
+
+/* Toolbar */
+#hospitalsPage .hospitals-final-toolbar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(340px, 1fr) 250px 250px;
+  gap: 14px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+  margin: 0;
+}
+
+#hospitalsPage .hospitals-final-search,
+#hospitalsPage .hospitals-final-select {
+  width: 100%;
+  height: 56px;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #fbfbfc;
+  color: #111827;
+  font-size: 15px;
+}
+
+#hospitalsPage .hospitals-final-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+}
+
+#hospitalsPage .hospitals-final-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 15px;
+  color: #111827;
+}
+
+#hospitalsPage .hospitals-final-search svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: #9ca3af;
+  stroke-width: 2;
+}
+
+#hospitalsPage .hospitals-final-select {
+  padding: 0 14px;
+  outline: 0;
+}
+
+/* Metrics */
+#hospitalsPage .hospitals-final-metrics {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0;
+}
+
+#hospitalsPage .hospital-metric-card {
+  min-height: 128px;
+  padding: 22px 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+#hospitalsPage .hospital-metric-card::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 5px;
+  border-radius: 999px;
+  background: #d33f33;
+}
+
+#hospitalsPage .hospital-metric-card span {
+  display: block;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+#hospitalsPage .hospital-metric-card strong {
+  display: block;
+  color: #111827;
+  font-size: 46px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+/* Main card */
+#hospitalsPage .hospitals-final-card {
+  width: 100%;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 28px;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+}
+
+#hospitalsPage .hospitals-final-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+#hospitalsPage .hospitals-final-card-head h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 27px;
+  font-weight: 900;
+}
+
+#hospitalsPage #hospitalsResultCount {
+  color: #6b7280;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+/* List */
+#hospitalsPage .hospitals-final-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#hospitalsPage .hospital-row {
+  display: grid;
+  grid-template-columns: 1.45fr 0.75fr 1fr auto;
+  align-items: center;
+  gap: 18px;
+  min-height: 108px;
+  padding: 20px 22px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+#hospitalsPage .hospital-row::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 16px;
+  bottom: 16px;
+  width: 5px;
+  border-radius: 999px;
+  background: #d33f33;
+}
+
+#hospitalsPage .hospital-main strong,
+#hospitalsPage .hospital-info strong {
+  display: block;
+  margin: 0 0 6px;
+  color: #111827;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+#hospitalsPage .hospital-main span,
+#hospitalsPage .hospital-info span {
+  display: block;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+#hospitalsPage .hospital-code {
+  display: inline-flex !important;
+  width: fit-content;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #3b63f2 !important;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+#hospitalsPage .hospital-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 74px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+#hospitalsPage .hospitals-empty {
+  padding: 38px;
+  text-align: center;
+  color: #6b7280;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 22px;
+}
+
+/* Scoped modal for hospitals only */
+#hospitalModal.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.46);
+  backdrop-filter: blur(8px);
+}
+
+#hospitalModal.active {
+  display: flex;
+}
+
+#hospitalModal .modal-card {
+  width: min(560px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 28px;
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.24);
+}
+
+#hospitalModal .modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 26px 18px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+#hospitalModal .modal-header h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+#hospitalModal .modal-header p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+#hospitalModal .modal-close {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+  color: #374151;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#hospitalModal .modal-form {
+  padding: 22px 26px 26px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+#hospitalModal .modal-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #374151;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+#hospitalModal .modal-form .modal-actions {
+  grid-column: 1 / -1;
+}
+
+#hospitalModal .modal-form input,
+#hospitalModal .modal-form select,
+#hospitalModal .modal-form textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #e5e7eb;
+  border-radius: 15px;
+  background: #f9fafb;
+  color: #111827;
+  padding: 0 14px;
+  outline: none;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+#hospitalModal .modal-form textarea {
+  min-height: 96px;
+  padding-top: 12px;
+  resize: vertical;
+}
+
+#hospitalModal .modal-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-top: 6px;
+}
+
+#hospitalModal .btn {
+  min-height: 44px;
+  border-radius: 14px;
+  padding: 0 18px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+#hospitalModal .btn-primary {
+  background: #c9473b;
+  border: 1px solid #c9473b;
+  color: #fff;
+}
+
+#hospitalModal .btn-light {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+}
+
+@media (max-width: 980px) {
+  #hospitalsPage .hospitals-final-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  #hospitalsPage .hospitals-final-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  #hospitalsPage .hospital-row {
+    grid-template-columns: 1fr;
+  }
+
+  #hospitalsPage .hospitals-final-header {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  #hospitalModal .modal-form {
+    grid-template-columns: 1fr;
+  }
+}

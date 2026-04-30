@@ -1,0 +1,152 @@
+:root {
+  --sidebar-width: 300px;
+  --header-height: 88px;
+  --logo-height: 92px;
+
+  --bg: #f6f8fc;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --glass: rgba(255,255,255,0.92);
+
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --red: #dc2626;
+  --red-soft: #fef2f2;
+
+  --shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
+  --radius: 24px;
+}
+
+html[dir=rtl] { direction: rtl; }
+
+.app-shell { 
+  margin-right: var(--sidebar-width); 
+  min-height: 100vh; 
+}
+
+/* ========== SIDEBAR: Fixed Right ========== */
+.main-nav {
+  position: fixed !important;
+  top: 0 !important; right: 0 !important; bottom: 0 !important;
+  width: var(--sidebar-width) !important;
+  height: 100vh !important;
+
+  display: flex !important; flex-direction: column !important;
+  gap: 12px !important; padding: 28px 20px !important;
+  
+  background: var(--glass) !important;
+  border-left: 1px solid var(--border) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: var(--shadow) !important;
+  overflow-y: auto !important; z-index: 100 !important;
+}
+
+/* World-Class Logo Hero: 80px Icon + Typography */
+.sidebar-brand-hero {
+  padding: 22px !important; margin-bottom: 8px !important;
+  background: linear-gradient(135deg, #ffffff 0%, #fef7f6 100%) !important;
+  border: 1px solid #fed7d7 !important; border-radius: var(--radius) !important;
+  box-shadow: 0 20px 40px rgba(220,38,38,0.12) !important;
+}
+
+.sidebar-brand-hero__row { 
+  display: flex !important; align-items: center !important; gap: 18px !important; 
+}
+
+.sidebar-brand-hero__icon { 
+  width: 80px !important; height: 80px !important; border-radius: 20px !important;
+  background: linear-gradient(135deg, var(--red), #b91c1c) !important;
+  display: grid !important; place-items: center !important;
+  box-shadow: 0 20px 40px rgba(220,38,38,0.3) !important;
+}
+.sidebar-brand-hero__icon svg { width: 38px !important; height: 38px !important; stroke: white !important; }
+
+.sidebar-brand-hero__title { 
+  font-size: 24px !important; font-weight: 900 !important; color: var(--text) !important; 
+  margin: 0 0 4px 0 !important; letter-spacing: -0.02em !important;
+}
+.sidebar-brand-hero__subtitle { 
+  font-size: 14px !important; color: var(--text-muted) !important; font-weight: 600 !important; 
+}
+
+/* ========== PRIORITY NAV ORDER (CSS order) ========== */
+.nav-pill[data-page="dashboard"] { order: 1 !important; }
+.nav-pill[data-page="requests"] { order: 2 !important; }
+.nav-pill[data-page="donors"] { order: 3 !important; }
+.nav-pill[data-page="notifications"] { order: 4 !important; } /* Dynamic */
+.nav-pill[data-page="health"] { order: 5 !important; }
+.nav-pill[data-page="workflow"] { order: 6 !important; }
+/* Dynamic tabs default order: 7+ */
+
+/* Nav Pill Styles */
+.nav-pill {
+  width: 100% !important; min-height: 52px !important; padding: 16px 20px !important;
+  border: 1px solid transparent !important; border-radius: 20px !important;
+  font-weight: 800 !important; font-size: 15px !important; text-align: right !important;
+  transition: all 0.2s cubic-bezier(0.4,0,0.2,1) !important;
+}
+.nav-pill:hover { background: #f8fafc !important; border-color: #e2e8f0 !important; transform: translateX(-4px) !important; }
+.nav-pill.active { 
+  background: var(--red-soft) !important; color: var(--red) !important; border-color: #fecaca !important;
+  box-shadow: 0 12px 24px rgba(220,38,38,0.15) !important; position: relative !important;
+}
+.nav-pill.active::before {
+  content: ''; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  width: 4px; height: 24px; background: var(--red); border-radius: 2px;
+}
+
+/* ========== HEADER: Clean & Fixed ========== */
+.topbar {
+  position: sticky !important; top: 0 !important; z-index: 99 !important;
+  margin-right: var(--sidebar-width) !important; width: calc(100vw - var(--sidebar-width)) !important;
+  height: var(--header-height) !important; padding: 0 32px !important;
+  background: var(--surface) !important; border-bottom: 1px solid var(--border) !important;
+  display: flex !important; align-items: center !important; gap: 24px !important; direction: rtl !important;
+}
+
+/* Hide duplicate brand in header */
+.topbar .brand { display: none !important; }
+
+/* Search: Right-Aligned, Premium Design */
+.topbar-right .search-box {
+  position: relative !important; width: 440px !important; height: 50px !important; flex-shrink: 0 !important;
+  background: var(--surface) !important; border: 1px solid #d1d5db !important; border-radius: 20px !important;
+  display: flex !important; align-items: center !important; overflow: hidden !important;
+}
+.search-box input {
+  flex: 1 !important; border: none !important; outline: none !important; padding: 0 20px 0 48px !important;
+  font-size: 15px !important; direction: rtl !important; background: transparent !important;
+}
+.search-box svg { 
+  position: absolute !important; left: 16px !important; color: #9ca3af !important; width: 22px !important; 
+}
+
+/* Actions: Left-Aligned */
+.topbar-right { 
+  margin-left: auto !important; margin-right: 0 !important; display: flex !important; gap: 12px !important; 
+}
+.icon-btn { 
+  width: 44px !important; height: 44px !important; border-radius: 14px !important; 
+  background: #f8fafc !important; border: none !important; display: grid !important; place-items: center !important;
+}
+.avatar { width: 46px !important; height: 46px !important; border-radius: 50% !important; }
+
+/* ========== MAIN CONTENT ========== */
+.main { 
+  margin-right: var(--sidebar-width) !important; padding: 32px !important; 
+  width: calc(100vw - var(--sidebar-width)) !important;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1200px) {
+  .main-nav { 
+    position: static !important; width: 100vw !important; height: auto !important; 
+    flex-direction: row !important; flex-wrap: wrap !important; gap: 8px !important; padding: 16px !important;
+  }
+  .app-shell, .topbar, .main { margin-right: 0 !important; width: 100vw !important; }
+  .topbar { flex-wrap: wrap !important; height: auto !important; padding: 20px !important; }
+  .search-box { width: 100% !important; order: -1 !important; margin-bottom: 12px !important; }
+}
+
+.main-nav::-webkit-scrollbar { width: 6px; }
+.main-nav::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 3px; }

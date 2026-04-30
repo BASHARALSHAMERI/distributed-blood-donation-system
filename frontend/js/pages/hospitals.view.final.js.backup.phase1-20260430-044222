@@ -1,0 +1,239 @@
+﻿(function () {
+  function qs(selector) {
+    return document.querySelector(selector);
+  }
+
+  function escapeText(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function getHospitalsData() {
+    try {
+      if (typeof state !== "undefined" && Array.isArray(state.hospitals)) {
+        return state.hospitals;
+      }
+    } catch (_) {}
+
+    return window.__hospitalsFallback || [];
+  }
+
+  async function fetchHospitalsFallback() {
+    try {
+      const response = await fetch("/api/requests/hospitals");
+      const data = await response.json();
+      window.__hospitalsFallback = Array.isArray(data.data) ? data.data : [];
+      renderHospitalsFinal();
+    } catch (error) {
+      console.error("Failed to load hospitals", error);
+    }
+  }
+
+  function normalizeHospital(item) {
+    return {
+      id: item.id,
+      name: item.name || item.hospitalName || "مستشفى غير مسمى",
+      code: item.code || item.hospitalCode || "-",
+      city: item.city || "Taiz",
+      phone: item.phone || item.contactPhone || "-",
+      contactPerson: item.contactPerson || item.contactName || item.department || "-",
+      address: item.address || "-",
+      isActive: item.isActive !== false
+    };
+  }
+
+  function filterHospitals(hospitals) {
+    const search = qs("#hospitalFinalSearch")?.value.trim().toLowerCase() || "";
+    const city = qs("#hospitalCityFilter")?.value || "ALL";
+    const status = qs("#hospitalStatusFilter")?.value || "ALL";
+
+    return hospitals.filter((hospital) => {
+      const text = [
+        hospital.name,
+        hospital.code,
+        hospital.city,
+        hospital.phone,
+        hospital.contactPerson,
+        hospital.address
+      ].join(" ").toLowerCase();
+
+      const matchSearch = !search || text.includes(search);
+      const matchCity = city === "ALL" || hospital.city === city;
+      const matchStatus =
+        status === "ALL" ||
+        (status === "ACTIVE" && hospital.isActive) ||
+        (status === "INACTIVE" && !hospital.isActive);
+
+      return matchSearch && matchCity && matchStatus;
+    });
+  }
+
+  function buildHospitalsPage() {
+    const page = qs("#hospitalsPage");
+    if (!page) return false;
+
+    if (page.dataset.finalized === "true") return true;
+
+    page.classList.add("hospitals-final-page");
+    page.innerHTML = `
+      <div class="hospitals-final-header">
+        <div>
+          <h1>المستشفيات</h1>
+          <p>إدارة الجهات الصحية المرتبطة ببنك الدم المركزي في مدينة تعز.</p>
+        </div>
+
+        <div class="page-actions">
+          <button id="openHospitalModalBtn" class="btn btn-primary" type="button">
+            إضافة مستشفى
+          </button>
+        </div>
+      </div>
+
+      <section class="hospitals-final-toolbar">
+        <div class="hospitals-final-search">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+          <input id="hospitalFinalSearch" placeholder="بحث باسم المستشفى أو الكود أو رقم التواصل..." />
+        </div>
+
+        <select id="hospitalCityFilter" class="hospitals-final-select">
+          <option value="ALL">كل المدن</option>
+        </select>
+
+        <select id="hospitalStatusFilter" class="hospitals-final-select">
+          <option value="ALL">كل الحالات</option>
+          <option value="ACTIVE">نشط</option>
+          <option value="INACTIVE">غير نشط</option>
+        </select>
+      </section>
+
+      <section class="hospitals-final-metrics">
+        <article class="hospital-metric-card">
+          <span>إجمالي المستشفيات</span>
+          <strong id="hospitalsTotalMetric">0</strong>
+        </article>
+
+        <article class="hospital-metric-card">
+          <span>المستشفيات النشطة</span>
+          <strong id="hospitalsActiveMetric">0</strong>
+        </article>
+
+        <article class="hospital-metric-card">
+          <span>مدن التغطية</span>
+          <strong id="hospitalsCitiesMetric">0</strong>
+        </article>
+      </section>
+
+      <section class="hospitals-final-card">
+        <div class="hospitals-final-card-head">
+          <div>
+            <h2>قائمة المستشفيات</h2>
+          </div>
+          <span id="hospitalsResultCount">0 مستشفى</span>
+        </div>
+
+        <div id="hospitalsFinalList" class="hospitals-final-list"></div>
+      </section>
+    `;
+
+    page.dataset.finalized = "true";
+
+    ["#hospitalFinalSearch", "#hospitalCityFilter", "#hospitalStatusFilter"].forEach((selector) => {
+      qs(selector)?.addEventListener("input", renderHospitalsFinal);
+      qs(selector)?.addEventListener("change", renderHospitalsFinal);
+    });
+
+    return true;
+  }
+
+  function updateCityFilter(hospitals) {
+    const select = qs("#hospitalCityFilter");
+    if (!select || select.dataset.loaded === "true") return;
+
+    const cities = [...new Set(hospitals.map((h) => h.city).filter(Boolean))];
+
+    cities.forEach((city) => {
+      const option = document.createElement("option");
+      option.value = city;
+      option.textContent = city;
+      select.appendChild(option);
+    });
+
+    select.dataset.loaded = "true";
+  }
+
+  function renderHospitalsFinal() {
+    if (!buildHospitalsPage()) return;
+
+    const hospitals = getHospitalsData().map(normalizeHospital);
+    updateCityFilter(hospitals);
+
+    const filtered = filterHospitals(hospitals);
+
+    const total = hospitals.length;
+    const active = hospitals.filter((h) => h.isActive).length;
+    const cities = new Set(hospitals.map((h) => h.city).filter(Boolean)).size;
+
+    if (qs("#hospitalsTotalMetric")) qs("#hospitalsTotalMetric").textContent = total;
+    if (qs("#hospitalsActiveMetric")) qs("#hospitalsActiveMetric").textContent = active;
+    if (qs("#hospitalsCitiesMetric")) qs("#hospitalsCitiesMetric").textContent = cities;
+    if (qs("#hospitalsResultCount")) qs("#hospitalsResultCount").textContent = `${filtered.length} مستشفى`;
+
+    const list = qs("#hospitalsFinalList");
+    if (!list) return;
+
+    if (!filtered.length) {
+      list.innerHTML = `<div class="hospitals-empty">لا توجد مستشفيات مطابقة للبحث الحالي.</div>`;
+      return;
+    }
+
+    list.innerHTML = filtered.map((hospital) => `
+      <article class="hospital-row">
+        <div class="hospital-main">
+          <strong>${escapeText(hospital.name)}</strong>
+          <span>${escapeText(hospital.address)}</span>
+          <span class="hospital-code">${escapeText(hospital.code)}</span>
+        </div>
+
+        <div class="hospital-info">
+          <span>المدينة</span>
+          <strong>${escapeText(hospital.city)}</strong>
+        </div>
+
+        <div class="hospital-info">
+          <span>التواصل</span>
+          <strong>${escapeText(hospital.phone)}</strong>
+          <span>${escapeText(hospital.contactPerson)}</span>
+        </div>
+
+        <div>
+          <span class="hospital-status">${hospital.isActive ? "نشط" : "غير نشط"}</span>
+        </div>
+      </article>
+    `).join("");
+  }
+
+  function waitAndBoot() {
+    if (!qs("#hospitalsPage")) {
+      setTimeout(waitAndBoot, 250);
+      return;
+    }
+
+    try {
+      window.renderHospitalsDomain = renderHospitalsFinal;
+      renderHospitalsDomain = renderHospitalsFinal;
+    } catch (_) {}
+
+    renderHospitalsFinal();
+    fetchHospitalsFallback();
+  }
+
+  document.addEventListener("DOMContentLoaded", waitAndBoot);
+  setTimeout(waitAndBoot, 500);
+})();

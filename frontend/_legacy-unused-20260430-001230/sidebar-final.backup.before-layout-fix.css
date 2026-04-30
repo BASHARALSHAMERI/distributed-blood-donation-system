@@ -1,0 +1,144 @@
+﻿/* FINAL RTL SIDEBAR OVERRIDE */
+
+html[dir="rtl"] body {
+  overflow-x: hidden !important;
+}
+
+/* تحويل القائمة العلوية إلى قائمة جانبية يمين */
+html[dir="rtl"] .main-nav {
+  position: fixed !important;
+  top: 16px !important;
+  right: 16px !important;
+  left: auto !important;
+
+  width: 270px !important;
+  height: calc(100vh - 32px) !important;
+
+  margin: 0 !important;
+  padding: 18px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 26px !important;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.14) !important;
+
+  z-index: 9999 !important;
+  overflow-y: auto !important;
+}
+
+/* عنوان داخل القائمة */
+html[dir="rtl"] .main-nav::before {
+  content: "BloodNet";
+  display: block !important;
+
+  margin-bottom: 4px !important;
+  padding: 16px 14px 6px !important;
+
+  color: #111827 !important;
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+}
+
+/* وصف داخل القائمة */
+html[dir="rtl"] .main-nav::after {
+  content: "نظام موزع لإدارة التبرع";
+  display: block !important;
+  order: -1 !important;
+
+  padding: 0 14px 10px !important;
+  margin-bottom: 8px !important;
+
+  color: #6b7280 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+/* أزرار القائمة */
+html[dir="rtl"] .main-nav .nav-pill {
+  width: 100% !important;
+  min-height: 46px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+
+  padding: 11px 14px !important;
+  margin: 0 !important;
+
+  border: 1px solid transparent !important;
+  border-radius: 15px !important;
+
+  background: transparent !important;
+  color: #334155 !important;
+
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  text-align: right !important;
+  direction: rtl !important;
+
+  box-shadow: none !important;
+  white-space: normal !important;
+}
+
+html[dir="rtl"] .main-nav .nav-pill:hover {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html[dir="rtl"] .main-nav .nav-pill.active {
+  background: linear-gradient(135deg, #b42318, #dc2626) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 14px 28px rgba(180, 35, 24, 0.25) !important;
+}
+
+/* إزاحة المحتوى إلى اليسار حتى لا يدخل تحت القائمة */
+html[dir="rtl"] .main {
+  margin-right: 310px !important;
+  width: calc(100% - 330px) !important;
+  max-width: none !important;
+}
+
+/* إزاحة الهيدر إن كان موجودًا */
+html[dir="rtl"] header,
+html[dir="rtl"] .header,
+html[dir="rtl"] .app-header,
+html[dir="rtl"] .topbar,
+html[dir="rtl"] .top-header {
+  margin-right: 310px !important;
+  width: calc(100% - 330px) !important;
+  max-width: none !important;
+}
+
+/* إخفاء فراغ القائمة القديمة داخل الهيدر إن بقي */
+html[dir="rtl"] .main-nav + * {
+  margin-right: 0 !important;
+}
+
+/* موبايل */
+@media (max-width: 980px) {
+  html[dir="rtl"] .main-nav {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 12px !important;
+  }
+
+  html[dir="rtl"] .main,
+  html[dir="rtl"] header,
+  html[dir="rtl"] .header,
+  html[dir="rtl"] .app-header,
+  html[dir="rtl"] .topbar,
+  html[dir="rtl"] .top-header {
+    margin-right: 0 !important;
+    width: 100% !important;
+  }
+}

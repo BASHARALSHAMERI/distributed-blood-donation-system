@@ -1,0 +1,180 @@
+﻿/* =========================================================
+   RTL White Sidebar Navigation
+   Converts the old top nav into a right sidebar for Arabic UI
+   ========================================================= */
+
+:root {
+  --sidebar-width: 280px;
+  --sidebar-gap: 24px;
+  --sidebar-bg: rgba(255, 255, 255, 0.96);
+  --sidebar-border: #e5e7eb;
+  --sidebar-text: #334155;
+  --sidebar-muted: #64748b;
+  --sidebar-active-1: #b42318;
+  --sidebar-active-2: #dc2626;
+}
+
+/* إلغاء سلوك القائمة العلوية وتحويلها إلى قائمة جانبية */
+.main-nav {
+  position: fixed !important;
+  top: 18px !important;
+  right: 18px !important;
+  left: auto !important;
+
+  width: var(--sidebar-width) !important;
+  height: calc(100vh - 36px) !important;
+
+  padding: 18px !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+
+  background: var(--sidebar-bg) !important;
+  border: 1px solid var(--sidebar-border) !important;
+  border-radius: 26px !important;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12) !important;
+  backdrop-filter: blur(18px) !important;
+
+  overflow-y: auto !important;
+  z-index: 1000 !important;
+}
+
+/* عنوان أعلى القائمة */
+.main-nav::before {
+  content: "بنك الدم الموزع";
+  display: block;
+  margin-bottom: 10px;
+  padding: 16px 14px;
+
+  border-radius: 20px;
+  background: linear-gradient(135deg, #fff1f2, #ffffff);
+  border: 1px solid #ffe4e6;
+
+  color: #991b1b;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+/* وصف صغير أسفل العنوان */
+.main-nav::after {
+  content: "مدينة تعز";
+  order: -1;
+  display: block;
+  margin-bottom: -4px;
+  padding: 0 14px 4px;
+
+  color: var(--sidebar-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* أزرار القائمة */
+.nav-pill {
+  width: 100% !important;
+  min-height: 46px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+
+  padding: 11px 14px !important;
+  margin: 0 !important;
+
+  border-radius: 15px !important;
+  border: 1px solid transparent !important;
+
+  background: transparent !important;
+  color: var(--sidebar-text) !important;
+
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  text-align: right !important;
+  cursor: pointer !important;
+
+  transition: 0.18s ease !important;
+}
+
+/* بما أن الاتجاه RTL، النص يبدأ من اليمين */
+.nav-pill {
+  direction: rtl !important;
+}
+
+/* hover */
+.nav-pill:hover {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* active */
+.nav-pill.active {
+  background: linear-gradient(135deg, var(--sidebar-active-1), var(--sidebar-active-2)) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 14px 28px rgba(180, 35, 24, 0.24) !important;
+}
+
+/* تحريك محتوى النظام حتى لا يدخل تحت القائمة */
+.main,
+.app-main,
+.content,
+.page-container {
+  margin-right: calc(var(--sidebar-width) + 42px) !important;
+  width: calc(100% - var(--sidebar-width) - 60px) !important;
+}
+
+/* إذا كان عندك header علوي، نحركه أيضًا */
+.header,
+.app-header,
+.top-header,
+.hero,
+.dashboard-header {
+  margin-right: calc(var(--sidebar-width) + 42px) !important;
+  width: calc(100% - var(--sidebar-width) - 60px) !important;
+}
+
+/* منع أي تمركز قديم للقائمة العلوية */
+header .main-nav,
+.app-header .main-nav,
+.top-header .main-nav {
+  position: fixed !important;
+}
+
+/* تحسين مظهر التمرير داخل القائمة */
+.main-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.main-nav::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+/* موبايل: ترجع القائمة أعلى الصفحة حتى لا تخنق الشاشة */
+@media (max-width: 980px) {
+  .main-nav {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 12px !important;
+    border-radius: 22px !important;
+  }
+
+  .main,
+  .app-main,
+  .content,
+  .page-container,
+  .header,
+  .app-header,
+  .top-header,
+  .hero,
+  .dashboard-header {
+    margin-right: 0 !important;
+    width: 100% !important;
+  }
+}

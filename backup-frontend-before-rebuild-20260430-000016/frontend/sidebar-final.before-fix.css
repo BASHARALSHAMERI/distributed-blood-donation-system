@@ -1,0 +1,323 @@
+﻿/* =========================================================
+   FINAL RTL SIDEBAR + HEADER FIX
+   مناسب للواجهة العربية RTL
+   ========================================================= */
+
+:root {
+  --sidebar-width: 292px;
+  --page-bg: #f5f7fb;
+  --surface: #ffffff;
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+
+  --nav-active-bg: #eef2ff;
+  --nav-active-text: #4f46e5;
+  --nav-hover-bg: #f8fafc;
+
+  --danger: #c94f44;
+  --danger-dark: #b54035;
+
+  --shadow-soft: 0 12px 34px rgba(15, 23, 42, 0.08);
+}
+
+html,
+body {
+  direction: rtl !important;
+  background: var(--page-bg) !important;
+  overflow-x: hidden !important;
+}
+
+/* =========================
+   القائمة الجانبية اليمنى
+   ========================= */
+
+.main-nav {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  bottom: 0 !important;
+
+  width: var(--sidebar-width) !important;
+  height: 100vh !important;
+
+  margin: 0 !important;
+  padding: 22px 18px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+
+  background: #ffffff !important;
+  border-left: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.10) !important;
+
+  overflow-y: auto !important;
+  z-index: 9999 !important;
+}
+
+/* عنوان القائمة */
+.main-nav::before {
+  content: "BloodNet";
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  min-height: 64px !important;
+  margin-bottom: 4px !important;
+  padding: 12px 14px !important;
+
+  border-radius: 20px !important;
+  border: 1px solid #f3dede !important;
+  background: linear-gradient(135deg, #fff7f7, #ffffff) !important;
+
+  color: #111827 !important;
+  font-size: 22px !important;
+  font-weight: 900 !important;
+}
+
+/* وصف القائمة */
+.main-nav::after {
+  content: "نظام موزع لإدارة التبرع";
+  order: -1 !important;
+
+  display: block !important;
+  text-align: center !important;
+
+  margin-bottom: 10px !important;
+  padding-top: 8px !important;
+
+  color: #64748b !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+/* أزرار التنقل */
+.main-nav .nav-pill {
+  width: 100% !important;
+  min-height: 48px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+
+  padding: 12px 16px !important;
+  margin: 0 !important;
+
+  border: 1px solid transparent !important;
+  border-radius: 16px !important;
+
+  background: transparent !important;
+  color: #334155 !important;
+
+  font-size: 15px !important;
+  font-weight: 850 !important;
+  line-height: 1.4 !important;
+  text-align: right !important;
+  direction: rtl !important;
+
+  box-shadow: none !important;
+  white-space: normal !important;
+  cursor: pointer !important;
+}
+
+.main-nav .nav-pill:hover {
+  background: var(--nav-hover-bg) !important;
+  border-color: #e2e8f0 !important;
+  color: #1e293b !important;
+}
+
+.main-nav .nav-pill.active {
+  background: var(--nav-active-bg) !important;
+  color: var(--nav-active-text) !important;
+  border-color: #dbe1ff !important;
+  box-shadow: none !important;
+}
+
+/* =========================
+   إزاحة المحتوى والهيدر
+   ========================= */
+
+.main {
+  margin-right: var(--sidebar-width) !important;
+  width: calc(100% - var(--sidebar-width)) !important;
+  max-width: none !important;
+  padding-right: 28px !important;
+  padding-left: 28px !important;
+  box-sizing: border-box !important;
+}
+
+/* الهيدر العلوي */
+.header,
+.topbar,
+.app-header,
+.top-header,
+.header-bar {
+  margin-right: var(--sidebar-width) !important;
+  width: calc(100% - var(--sidebar-width)) !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+}
+
+/* ضبط الهيدر الموجود أعلى الصفحة */
+.header,
+.topbar,
+.app-header,
+.top-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 18px !important;
+
+  padding-right: 28px !important;
+  padding-left: 28px !important;
+
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+}
+
+/* الشعار في يمين الهيدر */
+.brand,
+.logo,
+.header-brand,
+.topbar-brand {
+  order: 1 !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+/* البحث في الوسط */
+.search,
+.search-box,
+.search-wrapper,
+.header-search,
+.topbar-search {
+  order: 2 !important;
+  flex: 1 1 auto !important;
+  max-width: 430px !important;
+  margin-inline: auto !important;
+}
+
+/* الأيقونات والمستخدم في اليسار */
+.header-actions,
+.topbar-actions,
+.user-actions,
+.actions {
+  order: 3 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-right: auto !important;
+  margin-left: 0 !important;
+}
+
+/* دائرة المستخدم */
+.user-avatar,
+.avatar,
+.user-chip,
+.profile-avatar {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+/* =========================
+   الأزرار: الأحمر للطوارئ فقط
+   ========================= */
+
+.btn-primary,
+.btn-danger,
+.btn-critical,
+#createCriticalBtn,
+#runWorkflowBtn {
+  background: var(--danger) !important;
+  color: #ffffff !important;
+  border-color: var(--danger) !important;
+  box-shadow: 0 12px 28px rgba(201, 79, 68, 0.22) !important;
+}
+
+.btn-primary:hover,
+.btn-danger:hover,
+.btn-critical:hover,
+#createCriticalBtn:hover,
+#runWorkflowBtn:hover {
+  background: var(--danger-dark) !important;
+}
+
+/* زر التحديث والأزرار العادية */
+.btn-light,
+.btn-secondary,
+#refreshBtn {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* =========================
+   تحسينات عامة للصفحة
+   ========================= */
+
+.page-header {
+  margin-top: 26px !important;
+}
+
+.panel,
+.stat-card,
+.metric-card,
+.domain-card,
+.request-card,
+.donor-row {
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* =========================
+   استجابة الشاشات الصغيرة
+   ========================= */
+
+@media (max-width: 980px) {
+  .main-nav {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: auto !important;
+    border-left: none !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  .main,
+  .header,
+  .topbar,
+  .app-header,
+  .top-header,
+  .header-bar {
+    margin-right: 0 !important;
+    width: 100% !important;
+  }
+
+  .header,
+  .topbar,
+  .app-header,
+  .top-header {
+    flex-wrap: wrap !important;
+  }
+
+  .search,
+  .search-box,
+  .search-wrapper,
+  .header-search,
+  .topbar-search {
+    order: 4 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}

@@ -1,0 +1,452 @@
+﻿:root {
+  --sidebar-width: 280px;
+  --header-height: 86px;
+
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+  --border: #e7ebf3;
+
+  --text: #182033;
+  --muted: #6b7280;
+
+  --primary: #5b6df6;
+  --primary-soft: #eef2ff;
+  --primary-border: #dbe4ff;
+
+  --danger: #cf5b4d;
+  --danger-hover: #bb4c40;
+
+  --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.06);
+  --radius-xl: 22px;
+  --radius-lg: 18px;
+  --radius-md: 14px;
+}
+
+html, body {
+  direction: rtl !important;
+  background: var(--bg) !important;
+  overflow-x: hidden !important;
+}
+
+/* =========================
+   القائمة الجانبية
+   ========================= */
+.main-nav {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: auto !important;
+
+  width: var(--sidebar-width) !important;
+  height: 100vh !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+
+  padding: 18px 16px !important;
+  margin: 0 !important;
+
+  background: #ffffff !important;
+  border-left: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow-y: auto !important;
+  z-index: 1000 !important;
+}
+
+/* عنوان صغير أعلى القائمة */
+.main-nav::before {
+  content: "نظام موزع لإدارة التبرع";
+  display: block !important;
+  text-align: center !important;
+  color: #6b7280 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  margin-bottom: 10px !important;
+}
+
+/* صندوق الهوية */
+.main-nav::after {
+  content: "BloodNet";
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 74px !important;
+  border: 1px solid #efe5e5 !important;
+  border-radius: 22px !important;
+  background: #fff !important;
+  color: #111827 !important;
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  margin-bottom: 12px !important;
+  order: 0 !important;
+}
+
+/* عناصر القائمة */
+.main-nav .nav-pill {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+
+  width: 100% !important;
+  min-height: 48px !important;
+
+  padding: 12px 16px !important;
+  margin: 0 !important;
+
+  border-radius: 16px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+
+  color: #253047 !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+  text-align: right !important;
+
+  box-shadow: none !important;
+  cursor: pointer !important;
+  transition: all .18s ease !important;
+}
+
+.main-nav .nav-pill:hover {
+  background: #f8faff !important;
+  border-color: #eef2f7 !important;
+  color: #1f2a44 !important;
+}
+
+.main-nav .nav-pill.active {
+  background: var(--primary-soft) !important;
+  color: var(--primary) !important;
+  border-color: var(--primary-border) !important;
+  box-shadow: none !important;
+}
+
+/* =========================
+   إزاحة المحتوى الرئيسي
+   ========================= */
+.main,
+.app-shell,
+.page-shell,
+.content-shell {
+  margin-right: var(--sidebar-width) !important;
+  width: calc(100% - var(--sidebar-width)) !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+}
+
+/* =========================
+   الهيدر العلوي
+   ========================= */
+.header,
+.topbar,
+.app-header,
+.top-header,
+.header-bar {
+  margin-right: var(--sidebar-width) !important;
+  width: calc(100% - var(--sidebar-width)) !important;
+  min-height: var(--header-height) !important;
+
+  display: flex !important;
+  align-items: center !important;
+  gap: 18px !important;
+
+  padding: 18px 28px !important;
+  box-sizing: border-box !important;
+
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--border) !important;
+  box-shadow: none !important;
+
+  direction: rtl !important;
+}
+
+/* شعار الهيدر */
+.brand,
+.logo,
+.header-brand,
+.topbar-brand {
+  order: 2 !important;
+  margin: 0 auto !important;
+  flex: 0 0 auto !important;
+}
+
+/* البحث في اليمين */
+.search-box,
+.search,
+.search-wrapper,
+.header-search,
+.topbar-search {
+  order: 1 !important;
+  margin: 0 !important;
+  max-width: 360px !important;
+  width: 100% !important;
+  flex: 0 1 360px !important;
+}
+
+/* أدوات الهيدر في اليسار */
+.header-actions,
+.topbar-actions,
+.actions,
+.user-actions {
+  order: 3 !important;
+  margin-right: auto !important;
+  margin-left: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+/* في حال لم توجد حاوية actions وكان كل شيء مباشر */
+.header > .avatar,
+.header > .user-avatar,
+.topbar > .avatar,
+.topbar > .user-avatar,
+.header > .icon-btn,
+.topbar > .icon-btn {
+  order: 3 !important;
+}
+
+/* مدخل البحث */
+.search-box input,
+.search-wrapper input,
+.header-search input,
+.topbar-search input,
+input[type="search"] {
+  height: 48px !important;
+  border-radius: 16px !important;
+  border: 1px solid #dbe2ee !important;
+  background: #ffffff !important;
+  padding: 0 18px !important;
+  font-size: 15px !important;
+  box-shadow: none !important;
+}
+
+/* أيقونات الهيدر */
+.icon-btn,
+.header .icon-btn,
+.topbar .icon-btn,
+.header-actions button,
+.topbar-actions button {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 12px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* دائرة المستخدم */
+.avatar,
+.user-avatar,
+.profile-avatar,
+.user-chip {
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 999px !important;
+  flex-shrink: 0 !important;
+}
+
+/* =========================
+   محتوى الصفحات
+   ========================= */
+.main {
+  padding: 26px 28px 32px !important;
+}
+
+.page-header,
+.section-header {
+  margin-top: 6px !important;
+  margin-bottom: 20px !important;
+}
+
+.page-header h1,
+.section-header h1,
+.page-title {
+  font-size: 28px !important;
+  font-weight: 900 !important;
+  color: #182033 !important;
+  margin-bottom: 6px !important;
+}
+
+.page-header p,
+.section-header p,
+.page-subtitle {
+  font-size: 15px !important;
+  color: #6b7280 !important;
+  line-height: 1.8 !important;
+}
+
+/* =========================
+   الأزرار
+   ========================= */
+.btn-primary,
+.btn-danger,
+.btn-critical,
+#createCriticalBtn {
+  background: var(--danger) !important;
+  border: 1px solid var(--danger) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px rgba(207, 91, 77, 0.18) !important;
+}
+
+.btn-primary:hover,
+.btn-danger:hover,
+.btn-critical:hover,
+#createCriticalBtn:hover {
+  background: var(--danger-hover) !important;
+  border-color: var(--danger-hover) !important;
+}
+
+.btn-light,
+.btn-secondary,
+#refreshBtn {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: none !important;
+}
+
+/* =========================
+   البطاقات
+   ========================= */
+.panel,
+.card,
+.stat-card,
+.metric-card,
+.domain-card {
+  border-radius: 22px !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-soft) !important;
+}
+
+/* لا نغير ألوان البطاقات الملونة الحالية */
+.stat-card,
+.metric-card {
+  overflow: hidden !important;
+}
+
+/* =========================
+   استجابة
+   ========================= */
+@media (max-width: 1100px) {
+  .main-nav {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    border-left: none !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  .header,
+  .topbar,
+  .app-header,
+  .top-header,
+  .header-bar,
+  .main,
+  .app-shell,
+  .page-shell,
+  .content-shell {
+    margin-right: 0 !important;
+    width: 100% !important;
+  }
+
+  .header,
+  .topbar,
+  .app-header,
+  .top-header,
+  .header-bar {
+    flex-wrap: wrap !important;
+  }
+
+  .search-box,
+  .search,
+  .search-wrapper,
+  .header-search,
+  .topbar-search {
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+}
+
+/* =========================================================
+   SIDEBAR TOP BRAND - BLOODNET
+   ========================================================= */
+
+.sidebar-brand-hero {
+  width: calc(100% - 24px);
+  margin: 18px auto 20px auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sidebar-brand-hero__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  background: #ffffff;
+  border: 1px solid #eed7d5;
+  border-radius: 22px;
+  padding: 16px 18px;
+  min-height: 92px;
+
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+}
+
+.sidebar-brand-hero__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-brand-hero__title {
+  margin: 0 0 6px 0;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #111827;
+  letter-spacing: -0.3px;
+}
+
+.sidebar-brand-hero__subtitle {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+.sidebar-brand-hero__icon {
+  width: 72px;
+  height: 72px;
+  min-width: 72px;
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(180deg, #d35b56 0%, #c5443e 100%);
+  color: #ffffff;
+
+  box-shadow: 0 14px 28px rgba(197, 68, 62, 0.26);
+}
+
+.sidebar-brand-hero__icon svg {
+  width: 33px;
+  height: 33px;
+  stroke: currentColor;
+}
+
+/* إذا كان هناك صندوق قديم أسفل القائمة يحمل اسم BloodNet ويشوّه الشكل */
+.sidebar-footer-brand,
+.sidebar-bottom-brand,
+.sidebar-logo-box,
+.sidebar-brand-box,
+.sidebar-brand-card.footer-brand {
+  display: none !important;
+}

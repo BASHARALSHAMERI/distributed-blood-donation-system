@@ -1,0 +1,15 @@
+﻿{
+  "name": "api-gateway",
+  "version": "1.0.0",
+  "description": "API Gateway for Distributed Blood Donation Management System",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.3",
+    "http-proxy-middleware": "^2.0.6",
+    "morgan": "^1.10.0"
+  }
+}

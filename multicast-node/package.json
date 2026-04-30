@@ -1,0 +1,10 @@
+﻿{
+  "name": "multicast-node",
+  "version": "1.0.0",
+  "description": "UDP Multicast receiver node for critical blood alerts",
+  "main": "receiver.js",
+  "scripts": {
+    "start": "node receiver.js",
+    "send": "node sender.js"
+  }
+}

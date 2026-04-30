@@ -1,0 +1,15 @@
+{
+  "name": "inventory-service",
+  "version": "1.0.0",
+  "description": "Inventory Service for Distributed Blood Donation Management System",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^4.22.1",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.22.3"
+  }
+}

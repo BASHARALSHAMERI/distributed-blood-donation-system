@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام إدارة التبرع بالدم الموزع</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">
+          <span>BD</span>
+        </div>
+        <div>
+          <h1>نظام التبرع بالدم</h1>
+          <p>Distributed Blood Donation System</p>
+        </div>
+      </div>
+
+      <nav class="side-nav">
+        <button class="nav-link active" data-page="dashboard">
+          <span class="nav-icon">01</span>
+          <span>لوحة التحكم</span>
+        </button>
+        <button class="nav-link" data-page="donors">
+          <span class="nav-icon">02</span>
+          <span>المتبرعون</span>
+        </button>
+        <button class="nav-link" data-page="requests">
+          <span class="nav-icon">03</span>
+          <span>طلبات الدم</span>
+        </button>
+        <button class="nav-link" data-page="notifications">
+          <span class="nav-icon">04</span>
+          <span>الإشعارات</span>
+        </button>
+        <button class="nav-link" data-page="system">
+          <span class="nav-icon">05</span>
+          <span>حالة النظام</span>
+        </button>
+      </nav>
+
+      <div class="system-mini-card">
+        <span class="pulse"></span>
+        <div>
+          <strong>API Gateway</strong>
+          <small>localhost:3000</small>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">Distributed System Prototype</div>
+          <h2 id="pageTitle">لوحة التحكم</h2>
+          <p id="pageSubtitle">مراقبة خدمات النظام الموزع وسيناريو طلب الدم الحرج</p>
+        </div>
+
+        <div class="top-actions">
+          <button class="btn ghost" id="refreshBtn">تحديث</button>
+          <button class="btn primary" id="quickRequestBtn">طلب دم حرج</button>
+        </div>
+      </header>
+
+      <section id="dashboardPage" class="page active">
+        <div class="hero-card">
+          <div>
+            <span class="hero-label">System Workflow</span>
+            <h3>سيناريو طلب دم حرج في نظام موزع</h3>
+            <p>
+              يقوم النظام باستقبال الطلب عبر API Gateway، ثم تستدعي خدمة الطلبات خدمة المتبرعين،
+              وبعدها تنشر حدثًا عبر RabbitMQ وترسل تنبيهًا عاجلًا عبر UDP Multicast.
+            </p>
+          </div>
+          <div class="workflow-line">
+            <span>Gateway</span>
+            <span>Request</span>
+            <span>Donor</span>
+            <span>RabbitMQ</span>
+            <span>Multicast</span>
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <article class="metric-card">
+            <small>المتبرعون</small>
+            <strong id="metricDonors">0</strong>
+            <span>MySQL donor_db</span>
+          </article>
+          <article class="metric-card">
+            <small>طلبات الدم</small>
+            <strong id="metricRequests">0</strong>
+            <span>MySQL request_db</span>
+          </article>
+          <article class="metric-card">
+            <small>الإشعارات</small>
+            <strong id="metricNotifications">0</strong>
+            <span>RabbitMQ consumer</span>
+          </article>
+          <article class="metric-card">
+            <small>حالة النظام</small>
+            <strong id="metricSystem">...</strong>
+            <span>Gateway health check</span>
+          </article>
+        </div>
+
+        <div class="grid-2">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>آخر طلبات الدم</h3>
+                <p>الطلبات محفوظة في قاعدة request_db.</p>
+              </div>
+              <button class="btn small" data-page-target="requests">عرض الكل</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>المريض</th>
+                    <th>الفصيلة</th>
+                    <th>الأولوية</th>
+                    <th>الحالة</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardRequests"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>حالة الخدمات</h3>
+                <p>فحص سريع للخدمات الأساسية.</p>
+              </div>
+            </div>
+            <div id="dashboardHealth" class="health-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="donorsPage" class="page">
+        <div class="section-toolbar">
+          <div>
+            <h3>إدارة المتبرعين</h3>
+            <p>إضافة، بحث، وفرز المتبرعين حسب الفصيلة والمدينة.</p>
+          </div>
+          <button class="btn primary" id="openDonorModalBtn">إضافة متبرع</button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="input-group wide">
+            <label>بحث عام</label>
+            <input id="donorTextFilter" placeholder="ابحث بالاسم أو الهاتف أو المدينة" />
+          </div>
+          <div class="input-group">
+            <label>فصيلة الدم</label>
+            <select id="donorBloodFilter">
+              <option value="">كل الفصائل</option>
+              <option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option>
+              <option>O+</option><option>O-</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>المدينة</label>
+            <input id="donorCityFilter" placeholder="مثال: Sanaa" />
+          </div>
+          <button class="btn dark" id="applyDonorFilterBtn">تطبيق الفلترة</button>
+          <button class="btn ghost" id="resetDonorFilterBtn">إعادة ضبط</button>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>قائمة المتبرعين</h3>
+              <p id="donorsSummary">جاري التحميل...</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>المتبرع</th>
+                  <th>فصيلة الدم</th>
+                  <th>المدينة</th>
+                  <th>الهاتف</th>
+                  <th>الحالة</th>
+                </tr>
+              </thead>
+              <tbody id="donorsTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="requestsPage" class="page">
+        <div class="section-toolbar">
+          <div>
+            <h3>طلبات الدم</h3>
+            <p>إنشاء طلب دم جديد وتشغيل workflow موزع كامل.</p>
+          </div>
+          <button class="btn danger" id="openRequestModalBtn">إنشاء طلب دم</button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="input-group wide">
+            <label>بحث عام</label>
+            <input id="requestTextFilter" placeholder="ابحث بالمريض أو المستشفى أو المدينة" />
+          </div>
+          <div class="input-group">
+            <label>الأولوية</label>
+            <select id="requestUrgencyFilter">
+              <option value="">كل الأولويات</option>
+              <option>LOW</option>
+              <option>MEDIUM</option>
+              <option>HIGH</option>
+              <option>CRITICAL</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>الحالة</label>
+            <select id="requestStatusFilter">
+              <option value="">كل الحالات</option>
+              <option>PENDING</option>
+              <option>MATCHED</option>
+              <option>COMPLETED</option>
+              <option>CANCELLED</option>
+            </select>
+          </div>
+          <button class="btn dark" id="applyRequestFilterBtn">تطبيق الفلترة</button>
+          <button class="btn ghost" id="resetRequestFilterBtn">إعادة ضبط</button>
+        </div>
+
+        <div class="grid-2">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>قائمة الطلبات</h3>
+                <p id="requestsSummary">جاري التحميل...</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>المريض</th>
+                    <th>المستشفى</th>
+                    <th>الفصيلة</th>
+                    <th>الأولوية</th>
+                    <th>الحالة</th>
+                  </tr>
+                </thead>
+                <tbody id="requestsTable"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>نتيجة آخر عملية</h3>
+                <p>توضح Remote Invocation وRabbitMQ وMulticast.</p>
+              </div>
+            </div>
+            <pre id="lastWorkflowResult" class="code-panel">لم يتم إنشاء طلب بعد.</pre>
+          </section>
+        </div>
+      </section>
+
+      <section id="notificationsPage" class="page">
+        <div class="section-toolbar">
+          <div>
+            <h3>الإشعارات</h3>
+            <p>الإشعارات الناتجة عن RabbitMQ Pub/Sub.</p>
+          </div>
+          <button class="btn ghost" id="reloadNotificationsBtn">تحديث الإشعارات</button>
+        </div>
+
+        <div id="notificationsGrid" class="notifications-grid"></div>
+      </section>
+
+      <section id="systemPage" class="page">
+        <div class="section-toolbar">
+          <div>
+            <h3>حالة النظام الموزع</h3>
+            <p>فحص الخدمات المستقلة والاتصال عبر API Gateway.</p>
+          </div>
+          <button class="btn ghost" id="reloadHealthBtn">إعادة الفحص</button>
+        </div>
+
+        <div id="healthGrid" class="health-grid"></div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>المكونات المعمارية</h3>
+              <p>ملخص سريع للمكونات المستخدمة في التكليف.</p>
+            </div>
+          </div>
+
+          <div class="architecture-grid">
+            <div><strong>API Gateway</strong><span>نقطة دخول موحدة</span></div>
+            <div><strong>Remote Invocation</strong><span>Request Service → Donor Service</span></div>
+            <div><strong>RabbitMQ</strong><span>Indirect Communication / Pub-Sub</span></div>
+            <div><strong>UDP Multicast</strong><span>تنبيهات الطلبات الحرجة</span></div>
+            <div><strong>MySQL</strong><span>Persistence للمتبرعين والطلبات</span></div>
+            <div><strong>Docker Network</strong><span>تشغيل الخدمات كعقد مستقلة</span></div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalTitle">نافذة</h3>
+          <p id="modalSubtitle">أدخل البيانات المطلوبة</p>
+        </div>
+        <button class="icon-btn" id="closeModalBtn">×</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

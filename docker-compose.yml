@@ -1,0 +1,175 @@
+﻿services:
+  mysql:
+    image: mysql:8.0
+    container_name: blood-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - blood-network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -prootpass --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: blood-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=blooduser
+      - RABBITMQ_DEFAULT_PASS=bloodpass
+      - RABBITMQ_ERLANG_COOKIE=blood-rabbit-cookie-2026
+    networks:
+      - blood-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: blood-api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DONOR_SERVICE_URL=http://donor-service:4001
+      - REQUEST_SERVICE_URL=http://request-service:4002
+      - INVENTORY_SERVICE_URL=http://inventory-service:4003
+      - NOTIFICATION_SERVICE_URL=http://notification-service:4004
+    depends_on:
+      donor-service:
+        condition: service_started
+      request-service:
+        condition: service_started
+      inventory-service:
+        condition: service_started
+      notification-service:
+        condition: service_started
+    networks:
+      - blood-network
+
+  donor-service:
+    build:
+      context: ./donor-service
+    container_name: blood-donor-service
+    ports:
+      - "4001:4001"
+    environment:
+      - PORT=4001
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=blood_app
+      - DB_PASSWORD=blood_app_pass
+      - DB_NAME=donor_db
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - blood-network
+
+  request-service:
+    build:
+      context: ./request-service
+    container_name: blood-request-service
+    ports:
+      - "4002:4002"
+    environment:
+      - PORT=4002
+      - DONOR_SERVICE_URL=http://donor-service:4001
+      - INVENTORY_SERVICE_URL=http://inventory-service:4003
+      - RABBITMQ_URL=amqp://blooduser:bloodpass@rabbitmq:5672
+      - MULTICAST_GROUP=239.10.10.10
+      - MULTICAST_PORT=5005
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=blood_app
+      - DB_PASSWORD=blood_app_pass
+      - DB_NAME=request_db
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      donor-service:
+        condition: service_started
+      multicast-node:
+        condition: service_started
+    networks:
+      - blood-network
+
+  inventory-service:
+    build:
+      context: ./inventory-service
+    container_name: blood-inventory-service
+    ports:
+      - "4003:4003"
+    environment:
+      - PORT=4003
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=blood_app
+      - DB_PASSWORD=blood_app_pass
+      - DB_NAME=inventory_db
+      - DONOR_SERVICE_URL=http://donor-service:4001
+    depends_on:
+      mysql:
+        condition: service_healthy
+      donor-service:
+        condition: service_started
+    networks:
+      - blood-network
+  notification-service:
+    build:
+      context: ./notification-service
+    container_name: blood-notification-service
+    ports:
+      - "4004:4004"
+    environment:
+      - PORT=4004
+      - RABBITMQ_URL=amqp://blooduser:bloodpass@rabbitmq:5672
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=blood_app
+      - DB_PASSWORD=blood_app_pass
+      - DB_NAME=notification_db
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - blood-network
+  multicast-node:
+    build:
+      context: ./multicast-node
+    container_name: blood-multicast-node
+    ports:
+      - "5005:5005/udp"
+    environment:
+      - MULTICAST_GROUP=239.10.10.10
+      - MULTICAST_PORT=5005
+    networks:
+      - blood-network
+
+networks:
+  blood-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+
+
+

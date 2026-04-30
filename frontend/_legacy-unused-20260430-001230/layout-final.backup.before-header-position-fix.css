@@ -1,0 +1,602 @@
+﻿:root {
+  --sidebar-w: 300px;
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --border: #e5eaf3;
+  --text: #111827;
+  --muted: #667085;
+  --red: #c94f44;
+  --red-dark: #b54035;
+  --red-soft: #fff1f2;
+  --red-border: #ffd7d7;
+  --shadow: 0 14px 36px rgba(15, 23, 42, 0.07);
+}
+
+html, body {
+  direction: rtl !important;
+  background: var(--bg) !important;
+  overflow-x: hidden !important;
+}
+
+.main-nav {
+  display: none !important;
+}
+
+/* ================= Sidebar ================= */
+
+.rtl-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: #fff;
+  border-left: 1px solid var(--border);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 18px;
+  box-sizing: border-box;
+}
+
+.rtl-sidebar__caption {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.rtl-sidebar__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 78px;
+  padding: 14px;
+  border: 1px solid #f1dddd;
+  border-radius: 24px;
+  background: #fff;
+  margin-bottom: 18px;
+}
+
+.rtl-sidebar__brand-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  background: var(--red);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  box-shadow: 0 14px 30px rgba(201, 79, 68, 0.22);
+}
+
+.rtl-sidebar__brand-text strong {
+  display: block;
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 950;
+}
+
+.rtl-sidebar__brand-text span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.rtl-sidebar__nav {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.rtl-sidebar .nav-pill {
+  width: 100% !important;
+  min-height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 12px 15px !important;
+  border-radius: 16px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: #243047 !important;
+  text-align: right !important;
+  direction: rtl !important;
+  font-size: 15px !important;
+  font-weight: 850 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  transition: 0.18s ease !important;
+}
+
+.rtl-sidebar .nav-pill:hover {
+  background: #fff7f7 !important;
+  color: var(--red-dark) !important;
+  border-color: #fde3e3 !important;
+}
+
+.rtl-sidebar .nav-pill.active {
+  background: var(--red-soft) !important;
+  color: var(--red-dark) !important;
+  border-color: var(--red-border) !important;
+  position: relative !important;
+}
+
+.rtl-sidebar .nav-pill.active::before {
+  content: "";
+  position: absolute;
+  right: 8px;
+  top: 12px;
+  bottom: 12px;
+  width: 4px;
+  border-radius: 999px;
+  background: var(--red);
+}
+
+/* ================= Header ================= */
+
+.layout-topbar,
+header,
+.topbar,
+.header,
+.app-header {
+  margin-right: var(--sidebar-w) !important;
+  width: calc(100vw - var(--sidebar-w)) !important;
+  min-height: 88px !important;
+  background: #fff !important;
+  border-bottom: 1px solid var(--border) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 16px 32px !important;
+  gap: 24px !important;
+  box-sizing: border-box !important;
+  direction: rtl !important;
+}
+
+/* أخفِ أي شعار داخل الهيدر */
+.layout-topbar .brand,
+.layout-topbar .logo,
+header .brand,
+header .logo,
+.topbar .brand,
+.topbar .logo,
+.header .brand,
+.header .logo,
+.app-header .brand,
+.app-header .logo {
+  display: none !important;
+}
+
+/* منطقة اليمين: البحث */
+.header-search-wrap {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+.header-search-wrap .search-box,
+.header-search-wrap .search,
+.header-search-wrap .search-wrapper {
+  width: 460px !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+.header-search-wrap input,
+.search-box input,
+.search-wrapper input,
+.search input,
+input[type="search"] {
+  width: 100% !important;
+  height: 50px !important;
+  border-radius: 18px !important;
+  border: 1px solid #dbe2ee !important;
+  background: #fff !important;
+  color: #111827 !important;
+  font-size: 15px !important;
+  padding-right: 18px !important;
+  padding-left: 18px !important;
+  box-shadow: none !important;
+}
+
+/* منطقة اليسار: أيقونات المستخدم */
+.header-actions-wrap {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  flex: 0 0 auto !important;
+}
+
+.header-actions-wrap .icon-btn,
+.header-actions-wrap button {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 14px !important;
+  border: none !important;
+  background: #f8fafc !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: none !important;
+}
+
+.header-actions-wrap .avatar,
+.header-actions-wrap .user-avatar,
+.header-actions-wrap .profile-avatar,
+.header-actions-wrap .user-chip {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 999px !important;
+  flex-shrink: 0 !important;
+}
+
+/* ================= Main Content ================= */
+
+.main {
+  margin-right: var(--sidebar-w) !important;
+  width: calc(100vw - var(--sidebar-w)) !important;
+  padding: 28px 32px 36px !important;
+  box-sizing: border-box !important;
+}
+
+.page-header h1 {
+  font-size: 30px !important;
+  font-weight: 950 !important;
+  color: #182033 !important;
+}
+
+.page-header p {
+  font-size: 15px !important;
+  color: #6b7280 !important;
+}
+
+.btn-primary,
+.btn-danger,
+.btn-critical,
+#createCriticalBtn,
+#runWorkflowBtn {
+  background: var(--red) !important;
+  color: #fff !important;
+  border-color: var(--red) !important;
+}
+
+#refreshBtn,
+.btn-light,
+.btn-secondary {
+  background: #fff !important;
+  color: #1f2937 !important;
+  border: 1px solid var(--border) !important;
+}
+
+.panel,
+.card,
+.stat-card,
+.metric-card,
+.domain-card,
+.request-card,
+.donor-row {
+  border-radius: 22px !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* responsive */
+@media (max-width: 1100px) {
+  .rtl-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-left: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .layout-topbar,
+  header,
+  .topbar,
+  .header,
+  .app-header,
+  .main {
+    margin-right: 0 !important;
+    width: 100vw !important;
+  }
+
+  .layout-topbar,
+  header,
+  .topbar,
+  .header,
+  .app-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .header-search-wrap .search-box,
+  .header-search-wrap .search,
+  .header-search-wrap .search-wrapper {
+    width: 100% !important;
+  }
+
+  .header-actions-wrap {
+    justify-content: flex-start !important;
+  }
+}
+
+/* =========================================================
+   SEARCH FIELD FINAL FIX
+   نفس التصميم السابق لكن في المكان الحالي داخل الهيدر
+   ========================================================= */
+
+/* حاوية البحث داخل الهيدر */
+.header-search-wrap {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+/* صندوق البحث نفسه */
+.header-search-wrap .search-box,
+.header-search-wrap .search,
+.header-search-wrap .search-wrapper {
+  position: relative !important;
+
+  width: 430px !important;
+  max-width: 430px !important;
+  height: 50px !important;
+
+  display: flex !important;
+  align-items: center !important;
+
+  margin: 0 !important;
+  padding: 0 16px !important;
+
+  background: #ffffff !important;
+  border: 1px solid #dbe2ee !important;
+  border-radius: 18px !important;
+
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+/* منع ظهور إطارين متداخلين */
+.header-search-wrap .search-box input,
+.header-search-wrap .search input,
+.header-search-wrap .search-wrapper input,
+.layout-topbar .search-box input,
+.layout-topbar .search input,
+.layout-topbar .search-wrapper input {
+  width: 100% !important;
+  height: 100% !important;
+
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+
+  background: transparent !important;
+  color: #111827 !important;
+
+  font-size: 15px !important;
+  font-weight: 500 !important;
+
+  text-align: right !important;
+  direction: rtl !important;
+
+  padding: 0 0 0 42px !important;
+  margin: 0 !important;
+}
+
+/* لون النص التوضيحي */
+.header-search-wrap input::placeholder,
+.layout-topbar input::placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
+/* أيقونة البحث داخل الحقل من الجهة اليسرى */
+.header-search-wrap .search-box svg,
+.header-search-wrap .search svg,
+.header-search-wrap .search-wrapper svg,
+.header-search-wrap .search-icon,
+.layout-topbar .search-box svg,
+.layout-topbar .search svg,
+.layout-topbar .search-wrapper svg,
+.layout-topbar .search-icon {
+  position: absolute !important;
+  left: 16px !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+
+  width: 21px !important;
+  height: 21px !important;
+
+  color: #9ca3af !important;
+  stroke: #9ca3af !important;
+
+  pointer-events: none !important;
+}
+
+/* إزالة أي صندوق زائد حول أيقونة البحث */
+.header-search-wrap .search-box button,
+.header-search-wrap .search button,
+.header-search-wrap .search-wrapper button,
+.layout-topbar .search-box button,
+.layout-topbar .search button,
+.layout-topbar .search-wrapper button {
+  position: absolute !important;
+  left: 8px !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+
+  width: 34px !important;
+  height: 34px !important;
+
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* إخفاء أي إطار قديم حول البحث إذا كان الأب يضيفه */
+.header-search-wrap > div {
+  box-shadow: none !important;
+}
+
+/* ترتيب البحث داخل الهيدر: يبقى في مكانه الحالي */
+.layout-topbar .header-search-wrap {
+  order: 1 !important;
+  margin: 0 !important;
+}
+
+/* استجابة للشاشات الصغيرة */
+@media (max-width: 1100px) {
+  .header-search-wrap .search-box,
+  .header-search-wrap .search,
+  .header-search-wrap .search-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* =========================================================
+   SEARCH DESIGN ONLY FIX
+   إصلاح شكل حقل البحث فقط بدون تغيير مكانه أو ترتيب الهيدر
+   ========================================================= */
+
+.layout-topbar .search-box,
+.layout-topbar .search,
+.layout-topbar .search-wrapper,
+.header-search-wrap .search-box,
+.header-search-wrap .search,
+.header-search-wrap .search-wrapper {
+  position: relative !important;
+
+  height: 50px !important;
+  min-height: 50px !important;
+
+  display: flex !important;
+  align-items: center !important;
+
+  background: #ffffff !important;
+  border: 1px solid #dbe2ee !important;
+  border-radius: 18px !important;
+
+  box-shadow: none !important;
+  overflow: hidden !important;
+
+  padding: 0 !important;
+}
+
+/* إزالة الإطار الداخلي للحقل */
+.layout-topbar .search-box input,
+.layout-topbar .search input,
+.layout-topbar .search-wrapper input,
+.header-search-wrap .search-box input,
+.header-search-wrap .search input,
+.header-search-wrap .search-wrapper input,
+input[type="search"] {
+  width: 100% !important;
+  height: 100% !important;
+
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+
+  background: transparent !important;
+  color: #111827 !important;
+
+  font-size: 15px !important;
+  font-weight: 500 !important;
+
+  text-align: right !important;
+  direction: rtl !important;
+
+  padding: 0 18px 0 48px !important;
+  margin: 0 !important;
+}
+
+/* النص التوضيحي */
+.layout-topbar input::placeholder,
+.header-search-wrap input::placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
+/* زر / أيقونة البحث داخل الحقل */
+.layout-topbar .search-box button,
+.layout-topbar .search button,
+.layout-topbar .search-wrapper button,
+.header-search-wrap .search-box button,
+.header-search-wrap .search button,
+.header-search-wrap .search-wrapper button {
+  position: absolute !important;
+  left: 8px !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+
+  width: 36px !important;
+  height: 36px !important;
+
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* أيقونة البحث نفسها */
+.layout-topbar .search-box svg,
+.layout-topbar .search svg,
+.layout-topbar .search-wrapper svg,
+.header-search-wrap .search-box svg,
+.header-search-wrap .search svg,
+.header-search-wrap .search-wrapper svg {
+  width: 22px !important;
+  height: 22px !important;
+
+  color: #9ca3af !important;
+  stroke: #9ca3af !important;
+}
+
+/* منع ظهور حدود إضافية من عناصر داخلية */
+.layout-topbar .search-box *,
+.layout-topbar .search *,
+.layout-topbar .search-wrapper *,
+.header-search-wrap .search-box *,
+.header-search-wrap .search *,
+.header-search-wrap .search-wrapper * {
+  box-sizing: border-box !important;
+}
+
+/* عند التركيز */
+.layout-topbar .search-box:focus-within,
+.layout-topbar .search:focus-within,
+.layout-topbar .search-wrapper:focus-within,
+.header-search-wrap .search-box:focus-within,
+.header-search-wrap .search:focus-within,
+.header-search-wrap .search-wrapper:focus-within {
+  border-color: #c7d2fe !important;
+  box-shadow: 0 0 0 4px rgba(91, 109, 246, 0.08) !important;
+}

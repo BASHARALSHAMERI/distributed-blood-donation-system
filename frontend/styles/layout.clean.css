@@ -1,0 +1,473 @@
+﻿:root {
+  --sidebar-width: 292px;
+  --page-bg: #f6f8fc;
+  --surface: #ffffff;
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+  --red: #dc2626;
+  --red-dark: #b91c1c;
+  --red-soft: #fef2f2;
+  --red-border: #fecaca;
+  --shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+}
+
+html,
+body {
+  direction: rtl;
+  margin: 0;
+  min-height: 100%;
+  background: var(--page-bg);
+  overflow-x: hidden;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--sidebar-width);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "topbar sidebar"
+    "main sidebar";
+  background: var(--page-bg);
+}
+
+/* Sidebar */
+.sidebar {
+  grid-area: sidebar;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: #ffffff;
+  border-left: 1px solid var(--border);
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: -10px 0 34px rgba(15, 23, 42, 0.05);
+  z-index: 30;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 4px 20px;
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-icon {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  border-radius: 17px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #ef4444, #b91c1c);
+  box-shadow: 0 14px 28px rgba(220, 38, 38, 0.24);
+}
+
+.brand-icon svg {
+  width: 29px;
+  height: 29px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.brand-text strong {
+  font-size: 22px;
+  line-height: 1.1;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.brand-text span {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.main-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 6px;
+  overflow-y: auto;
+}
+
+.nav-pill {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 11px 16px;
+  background: transparent;
+  color: #374151;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: right;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.nav-pill:hover {
+  color: var(--red);
+  background: var(--red-soft);
+  border-color: var(--red-border);
+}
+
+.nav-pill.active {
+  color: var(--red-dark);
+  background: var(--red-soft);
+  border-color: var(--red-border);
+  box-shadow: 0 12px 24px rgba(220, 38, 38, 0.10);
+}
+
+/* Top header */
+.topbar-actions {
+  grid-area: topbar;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 20px 28px 10px;
+  background: linear-gradient(to bottom, rgba(246, 248, 252, 0.95), rgba(246, 248, 252, 0.75));
+  backdrop-filter: blur(10px);
+}
+
+.topbar-right {
+  min-height: 68px;
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-box {
+  flex: 1 1 auto;
+  max-width: 680px;
+  min-width: 260px;
+  height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  margin-inline-start: auto;
+}
+
+.search-box svg,
+.icon-btn svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.search-box svg {
+  color: #9ca3af;
+}
+
+.search-box input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 15px;
+}
+
+.icon-btn,
+.avatar {
+  flex: 0 0 auto;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: #ffffff;
+  color: #374151;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  color: var(--red);
+  background: var(--red-soft);
+  border-color: var(--red-border);
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  background: #111827;
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+/* Main */
+.main {
+  grid-area: main;
+  min-width: 0;
+  padding: 18px 28px 38px;
+}
+
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 20px;
+}
+
+.cards-grid,
+.metrics-grid,
+.domain-grid {
+  gap: 18px;
+}
+
+.card,
+.panel,
+.metric-card,
+.domain-card,
+.table-card {
+  border-radius: 22px;
+}
+
+.modal-overlay {
+  z-index: 200;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  :root {
+    --sidebar-width: 250px;
+  }
+
+  .topbar-actions,
+  .main {
+    padding-inline: 16px;
+  }
+
+  .brand-text strong {
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    display: block;
+  }
+
+  .sidebar {
+    position: relative;
+    height: auto;
+    border-left: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .main-nav {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .nav-pill {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .topbar-actions {
+    padding: 12px;
+  }
+
+  .topbar-right {
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+    min-width: 100%;
+    max-width: none;
+  }
+
+  .main {
+    padding: 18px 12px 30px;
+  }
+}
+
+/* =========================================================
+   Emergency RTL Layout Fix
+   Purpose:
+   - Force sidebar to the RIGHT
+   - Keep content RTL
+   - Hide duplicated injected sidebar brand
+   ========================================================= */
+
+.app-shell {
+  direction: ltr !important;
+  grid-template-columns: minmax(0, 1fr) var(--sidebar-width) !important;
+  grid-template-areas:
+    "topbar sidebar"
+    "main sidebar" !important;
+}
+
+.sidebar,
+.topbar-actions,
+.main {
+  direction: rtl !important;
+}
+
+/* Hide old/injected duplicate brand if app.js created one */
+.sidebar > .sidebar-brand,
+.sidebar > .sidebar-logo,
+.sidebar > .app-brand,
+.sidebar > .layout-brand,
+.sidebar > .brand-mini,
+.sidebar > .brand-compact {
+  display: none !important;
+}
+
+/* Keep the real brand clean */
+.sidebar > .brand {
+  margin-top: 0 !important;
+}
+
+/* Ensure sidebar stays visually attached to the right */
+.sidebar {
+  grid-area: sidebar !important;
+}
+
+.topbar-actions {
+  grid-area: topbar !important;
+}
+
+.main {
+  grid-area: main !important;
+}
+
+/* =========================================================
+   Final Sidebar/Header Stabilization
+   - Remove duplicated injected brand visually if cached
+   - Keep sidebar fixed on the right
+   - Keep header search at the start of the header area
+   ========================================================= */
+
+.app-shell {
+  direction: ltr !important;
+  grid-template-columns: minmax(0, 1fr) var(--sidebar-width) !important;
+  grid-template-areas:
+    "topbar sidebar"
+    "main sidebar" !important;
+}
+
+/* المحتوى عربي، لكن توزيع الشبكة LTR حتى تبقى القائمة يمينًا */
+.sidebar,
+.topbar-actions,
+.main {
+  direction: rtl !important;
+}
+
+/* تثبيت القائمة الجانبية بالكامل */
+.sidebar {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: var(--sidebar-width) !important;
+  height: auto !important;
+  min-height: 100vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* لا نريد Scroll داخلي للقائمة نفسها */
+.main-nav {
+  overflow: visible !important;
+}
+
+/* إخفاء أي شعار مكرر تم حقنه سابقًا */
+.sidebar-brand-hero {
+  display: none !important;
+}
+
+/* الشعار الحقيقي فقط */
+.sidebar > .brand {
+  display: flex !important;
+  margin-top: 0 !important;
+}
+
+/* ضبط الهيدر: الأزرار في جهة، والبحث في بداية مساحة الشريط */
+.topbar-right {
+  direction: ltr !important;
+  justify-content: flex-start !important;
+}
+
+/* ترتيب الأيقونات: المستخدم، الإعدادات، التنبيهات، ثم البحث بعيدًا */
+.topbar-right .avatar {
+  order: 1 !important;
+}
+
+.topbar-right .icon-btn[title="الإعدادات"] {
+  order: 2 !important;
+}
+
+.topbar-right .icon-btn[title="الإشعارات"] {
+  order: 3 !important;
+}
+
+.topbar-right .search-box {
+  order: 4 !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  max-width: 720px !important;
+}
+
+.search-box input {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+/* منع المحتوى من الدخول تحت القائمة الثابتة */
+.main,
+.topbar-actions {
+  min-width: 0 !important;
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    position: relative !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: auto !important;
+  }
+
+  .topbar-right {
+    direction: rtl !important;
+  }
+
+  .topbar-right .search-box {
+    order: -1 !important;
+    margin-left: 0 !important;
+    min-width: 100% !important;
+  }
+}

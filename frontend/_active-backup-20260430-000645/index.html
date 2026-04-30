@@ -1,0 +1,537 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BloodNet لوحة التحكم</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./ui-polish.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./ui-layout-final.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 3C9.4 6.3 6.5 9.8 6.5 13.2A5.5 5.5 0 0 0 12 18.7a5.5 5.5 0 0 0 5.5-5.5C17.5 9.8 14.6 6.3 12 3Z"/>
+        <path d="M9.7 13.3c.3 1.2 1.2 2 2.5 2"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <strong>BloodNet</strong>
+      <span>نظام موزع لإدارة التبرع</span>
+    </div>
+  </div>
+
+  <nav class="main-nav">
+    <button class="nav-pill active" data-page="dashboard">لوحة التحكم</button>
+    <button class="nav-pill" data-page="donors">المتبرعون</button>
+    <button class="nav-pill" data-page="requests">طلبات الدم</button>
+    <button class="nav-pill" data-page="workflow">مسار النظام</button>
+    <button class="nav-pill" data-page="health">حالة الخدمات</button>
+  </nav>
+
+  <div class="topbar-right">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5"></path>
+      </svg>
+      <input id="globalSearch" placeholder="ابحث عن متبرع أو طلب..." />
+    </div>
+
+    <button class="icon-btn" title="الإشعارات">
+      <svg viewBox="0 0 24 24">
+        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9Z"/>
+        <path d="M9.5 19a2.5 2.5 0 0 0 5 0"/>
+      </svg>
+    </button>
+
+    <button class="icon-btn" title="الإعدادات">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"/>
+        <path d="M19.4 15a1.8 1.8 0 0 0 .36 2l.05.05a2.1 2.1 0 0 1-2.96 2.96l-.05-.05a1.8 1.8 0 0 0-2-.36 1.8 1.8 0 0 0-1.1 1.66V21a2.1 2.1 0 0 1-4.2 0v-.08A1.8 1.8 0 0 0 8.4 19.3a1.8 1.8 0 0 0-2 .36l-.05.05a2.1 2.1 0 0 1-2.96-2.96l.05-.05a1.8 1.8 0 0 0 .36-2A1.8 1.8 0 0 0 2.14 13H2a2.1 2.1 0 0 1 0-4.2h.08A1.8 1.8 0 0 0 3.7 7.7a1.8 1.8 0 0 0-.36-2l-.05-.05a2.1 2.1 0 0 1 2.96-2.96l.05.05a1.8 1.8 0 0 0 2 .36A1.8 1.8 0 0 0 9.4 1.44V1.4a2.1 2.1 0 0 1 4.2 0v.08a1.8 1.8 0 0 0 1.1 1.62 1.8 1.8 0 0 0 2-.36l.05-.05a2.1 2.1 0 0 1 2.96 2.96l-.05.05a1.8 1.8 0 0 0-.36 2A1.8 1.8 0 0 0 20.86 9H21a2.1 2.1 0 0 1 0 4.2h-.08A1.8 1.8 0 0 0 19.4 15Z"/>
+      </svg>
+    </button>
+
+    <div class="avatar">B</div>
+  </div>
+</header>
+
+    <main class="main">
+      <section id="dashboardPage" class="page active">
+        <div class="page-header">
+          <div>
+            <h1>لوحة التحكم</h1>
+            <p>نظرة عامة على المتبرعين والطلبات وحالة الخدمات.</p>
+          </div>
+
+          <div class="page-actions">
+            <button class="btn btn-light" id="refreshBtn">
+              <svg viewBox="0 0 24 24">
+                <path d="M20 12a8 8 0 1 1-2.35-5.65"/>
+                <path d="M20 4v6h-6"/>
+              </svg>
+              تحديث
+            </button>
+            <button class="btn btn-primary" id="createCriticalBtn">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3 2 21h20L12 3Z"/>
+                <path d="M12 9v5"/>
+                <path d="M12 17h.01"/>
+              </svg>
+              طلب دم حرج
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Emergency Blood Request مسار النظام</h2>
+            <p>البوابة ← خدمة الطلبات ← مطابقة المتبرعين ← الإشعارات ← تنبيه الطوارئ</p>
+          </div>
+          <button class="btn btn-dark" id="viewمسار النظامBtn">View مسار النظام</button>
+        </div>
+
+        <div class="kpi-grid">
+          <article class="kpi-card kpi-blue">
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24"><path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0Z"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+            </div>
+            <span>Total المتبرعون</span>
+            <strong id="donorsCount">0</strong>
+            <p>متبرعون مسجلون</p>
+          </article>
+
+          <article class="kpi-card kpi-green">
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>
+            </div>
+            <span>المتبرعون المتاحون</span>
+            <strong id="availableالمتبرعونCount">0</strong>
+            <p>جاهزون للتبرع</p>
+          </article>
+
+          <article class="kpi-card kpi-red">
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3Z"/><path d="M12 9v5"/><path d="M12 17h.01"/></svg>
+            </div>
+            <span>Critical طلبات الدم</span>
+            <strong id="criticalطلبات الدمCount">0</strong>
+            <p>تحتاج متابعة</p>
+          </article>
+
+          <article class="kpi-card kpi-purple">
+            <div class="kpi-icon">
+              <svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9Z"/><path d="M9.5 19a2.5 2.5 0 0 0 5 0"/></svg>
+            </div>
+            <span>الإشعارات</span>
+            <strong id="notificationsCount">0</strong>
+            <p>أحداث الإشعارات</p>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel panel-large">
+            <div class="panel-title">
+              <div>
+                <h3>آخر طلبات الدم</h3>
+                <p>أحدث الطلبات المحفوظة</p>
+              </div>
+              <button class="panel-link" data-page="requests">عرض الكل</button>
+            </div>
+            <div id="recentطلبات الدمList" class="list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">
+              <div>
+                <h3>حالة الخدمات</h3>
+                <p>الخدمات المتصلة حاليًا</p>
+              </div>
+            </div>
+            <div id="servicesList" class="service-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="donorsPage" class="page">
+  <div class="page-header donors-header">
+    <div>
+      <h1>المتبرعون</h1>
+      <p>إدارة المتبرعين والبحث السريع حسب الفصيلة والمدينة والحالة.</p>
+    </div>
+
+    <div class="page-actions">
+      <button class="btn btn-primary" id="openDonorModalBtn">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5v14"></path>
+          <path d="M5 12h14"></path>
+        </svg>
+        إضافة متبرع
+      </button>
+    </div>
+  </div>
+
+  <section class="panel donors-panel">
+    <div class="toolbar">
+      <div class="toolbar-search">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <input id="donorSearchInput" type="text" placeholder="ابحث بالاسم أو الهاتف..." />
+      </div>
+
+      <select id="bloodTypeFilter" class="toolbar-select">
+        <option value="">كل الفصائل</option>
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+      </select>
+
+      <select id="cityFilter" class="toolbar-select">
+        <option value="">كل المدن</option>
+        <option value="Sanaa">صنعاء</option>
+        <option value="Taiz">تعز</option>
+        <option value="Aden">عدن</option>
+        <option value="Ibb">إب</option>
+      </select>
+
+      <select id="availabilityFilter" class="toolbar-select">
+        <option value="">كل الحالات</option>
+        <option value="available">متاح</option>
+        <option value="unavailable">غير متاح</option>
+      </select>
+    </div>
+
+    <div class="list-meta">
+      <strong id="donorResultsCount">0</strong>
+      <span>نتيجة</span>
+    </div>
+
+    <div id="donorsList" class="donors-list"></div>
+  </section>
+</section>
+
+      <section id="requestsPage" class="page">
+  <div class="page-header requests-header">
+    <div>
+      <h1>طلبات الدم</h1>
+      <p>إدارة طلبات الدم ومتابعة حالتها.</p>
+    </div>
+
+    <div class="page-actions">
+      <button class="btn btn-primary" id="openRequestModalBtn" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5v14"></path>
+          <path d="M5 12h14"></path>
+        </svg>
+        إنشاء طلب
+      </button>
+    </div>
+  </div>
+
+  <section class="panel requests-panel">
+    <div class="toolbar request-toolbar">
+      <div class="toolbar-search">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <input id="requestSearchInput" type="text" placeholder="بحث باسم المريض أو المستشفى" />
+      </div>
+
+      <select id="requestBloodTypeFilter" class="toolbar-select">
+        <option value="">كل الفصائل</option>
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+      </select>
+
+      <select id="urgencyFilter" class="toolbar-select">
+        <option value="">كل الأولويات</option>
+        <option value="LOW">منخفض</option>
+        <option value="MEDIUM">متوسط</option>
+        <option value="HIGH">مرتفع</option>
+        <option value="CRITICAL">حرج</option>
+      </select>
+
+      <select id="requestStatusFilter" class="toolbar-select">
+        <option value="">كل الحالات</option>
+        <option value="PENDING">قيد الانتظار</option>
+        <option value="MATCHED">تمت المطابقة</option>
+        <option value="COMPLETED">مكتمل</option>
+        <option value="CANCELLED">ملغي</option>
+      </select>
+    </div>
+
+    <div class="request-summary-grid request-summary-soft">
+      <div class="request-summary-card">
+        <span>إجمالي الطلبات</span>
+        <strong id="totalRequestsMetric">0</strong>
+      </div>
+
+      <div class="request-summary-card">
+        <span>طلبات حرجة</span>
+        <strong id="criticalRequestsMetric">0</strong>
+      </div>
+
+      <div class="request-summary-card">
+        <span>قيد الانتظار</span>
+        <strong id="pendingRequestsMetric">0</strong>
+      </div>
+
+      <div class="request-summary-card">
+        <span>مكتملة</span>
+        <strong id="completedRequestsMetric">0</strong>
+      </div>
+    </div>
+
+    <div class="list-meta">
+      <strong id="requestResultsCount">0</strong>
+      <span>طلب</span>
+    </div>
+
+    <div id="requestsList" class="requests-list"></div>
+  </section>
+</section>
+<section id="workflowPage" class="page">
+  <div class="page-header workflow-header">
+    <div>
+      <h1>مسار النظام</h1>
+      <p>تشغيل سيناريو الطلب الحرج ومتابعة مراحل النظام الموزع.</p>
+    </div>
+
+    <div class="page-actions">
+      <button class="btn btn-primary" id="runWorkflowBtn" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"></path>
+        </svg>
+        تشغيل سيناريو حرج
+      </button>
+    </div>
+  </div>
+
+  <section class="workflow-grid">
+    <article class="workflow-step-card">
+      <span class="step-number">01</span>
+      <h3>API Gateway</h3>
+      <p>استقبال الطلب وتوجيهه إلى خدمة الطلبات.</p>
+      <strong>HTTP :3000</strong>
+    </article>
+
+    <article class="workflow-step-card">
+      <span class="step-number">02</span>
+      <h3>Request Service</h3>
+      <p>حفظ طلب الدم وبدء المعالجة.</p>
+      <strong>request_db</strong>
+    </article>
+
+    <article class="workflow-step-card">
+      <span class="step-number">03</span>
+      <h3>Donor Matching</h3>
+      <p>استدعاء خدمة المتبرعين للبحث عن متبرعين مناسبين.</p>
+      <strong>Remote Invocation</strong>
+    </article>
+
+    <article class="workflow-step-card">
+      <span class="step-number">04</span>
+      <h3>RabbitMQ</h3>
+      <p>نشر حدث الطلب الحرج بنمط Pub/Sub.</p>
+      <strong>blood_events</strong>
+    </article>
+
+    <article class="workflow-step-card">
+      <span class="step-number">05</span>
+      <h3>Notification Service</h3>
+      <p>استهلاك الحدث وإنشاء إشعار.</p>
+      <strong>Consumer</strong>
+    </article>
+
+    <article class="workflow-step-card">
+      <span class="step-number">06</span>
+      <h3>UDP Multicast</h3>
+      <p>إرسال تنبيه الطوارئ إلى عقد الاستقبال.</p>
+      <strong>239.10.10.10:5005</strong>
+    </article>
+  </section>
+
+  <section class="panel workflow-result-panel">
+    <div class="panel-title">
+      <div>
+        <h3>نتيجة آخر سيناريو</h3>
+        <p>تظهر هنا نتيجة تشغيل الطلب الحرج من صفحة مسار النظام.</p>
+      </div>
+    </div>
+
+    <pre id="workflowResult" class="workflow-code">لم يتم تشغيل سيناريو بعد.</pre>
+  </section>
+</section>
+
+
+      <section id="healthPage" class="page placeholder-page">
+        <h1>حالة الخدمات</h1>
+        <p>سيتم تصميم مراقبة الخدمات في الخطوة التالية.</p>
+      </section>
+    </main>
+  </div>
+
+  <div id="donorModal" class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <h3>إضافة متبرع جديد</h3>
+        <p>أدخل بيانات المتبرع بشكل مختصر وواضح.</p>
+      </div>
+      <button class="modal-close" id="closeDonorModalBtn">×</button>
+    </div>
+
+    <form id="donorForm" class="modal-form">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>الاسم الكامل</label>
+          <input type="text" id="donorFullName" required />
+        </div>
+
+        <div class="form-field">
+          <label>فصيلة الدم</label>
+          <select id="donorBloodType" required>
+            <option value="">اختر</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>المدينة</label>
+          <input type="text" id="donorCity" required />
+        </div>
+
+        <div class="form-field">
+          <label>الهاتف</label>
+          <input type="text" id="donorPhone" required />
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-light" id="cancelDonorModalBtn">إلغاء</button>
+        <button type="submit" class="btn btn-primary" id="saveDonorBtn">حفظ المتبرع</button>
+      </div>
+    </form>
+  </div>
+</div>
+  <div id="requestModal" class="modal-overlay">
+  <div class="modal-card compact-modal">
+    <div class="modal-header">
+      <div>
+        <h3>إنشاء طلب دم</h3>
+        <p>أدخل بيانات الطلب الأساسية.</p>
+      </div>
+      <button class="modal-close" id="closeRequestModalBtn" type="button">×</button>
+    </div>
+
+    <form id="requestForm" class="modal-form">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>اسم المريض</label>
+          <input type="text" id="patientName" required />
+        </div>
+
+        <div class="form-field">
+          <label>المستشفى</label>
+          <input type="text" id="hospitalName" required />
+        </div>
+
+        <div class="form-field">
+          <label>فصيلة الدم</label>
+          <select id="requestBloodType" required>
+            <option value="">اختر</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>المدينة</label>
+          <input type="text" id="requestCity" required />
+        </div>
+
+        <div class="form-field">
+          <label>الأولوية</label>
+          <select id="requestUrgency" required>
+            <option value="LOW">منخفض</option>
+            <option value="MEDIUM">متوسط</option>
+            <option value="HIGH">مرتفع</option>
+            <option value="CRITICAL" selected>حرج</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-light" id="cancelRequestModalBtn">إلغاء</button>
+        <button type="submit" class="btn btn-primary">حفظ الطلب</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="./app.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
