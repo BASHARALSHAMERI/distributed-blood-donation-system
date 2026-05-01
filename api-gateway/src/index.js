@@ -50,7 +50,7 @@ app.get("/api/system/health", async (req, res) => {
     healthChecks.map(async (service) => {
       try {
         const response = await fetch(service.url, {
-          signal: AbortSignal.timeout(3000)
+          signal: AbortSignal.timeout(3000) // 3 seconds timeout
         });
 
         const data = await response.json();
@@ -80,14 +80,26 @@ app.get("/api/system/health", async (req, res) => {
   });
 });
 
+// دالة موحدة للتعامل مع أخطاء البروكسي (إذا كانت الخدمة المتوجهة إليها متوقفة)
+const proxyOnError = {
+  onError: (err, req, res) => {
+    console.error(`[Proxy Error] ${req.url}: ${err.message}`);
+    res.status(503).json({
+      error: "Service Unavailable",
+      message: `The target service for ${req.originalUrl} is currently down or unreachable.`,
+      statusCode: 503
+    });
+  }
+};
+
+// إعداد البروكسي مع تعديل مسار إعادة الكتابة ليبقي اسم الخدمة
 app.use(
   "/api/donors",
   createProxyMiddleware({
     target: services.donor,
     changeOrigin: true,
-    pathRewrite: {
-      "^/api/donors": ""
-    }
+    pathRewrite: { "^/api": "" }, // /api/donors/1 يصبح /donors/1
+    ...proxyOnError
   })
 );
 
@@ -96,9 +108,8 @@ app.use(
   createProxyMiddleware({
     target: services.request,
     changeOrigin: true,
-    pathRewrite: {
-      "^/api/requests": ""
-    }
+    pathRewrite: { "^/api": "" }, // /api/requests يصبح /requests
+    ...proxyOnError
   })
 );
 
@@ -107,9 +118,8 @@ app.use(
   createProxyMiddleware({
     target: services.inventory,
     changeOrigin: true,
-    pathRewrite: {
-      "^/api/inventory": ""
-    }
+    pathRewrite: { "^/api": "" }, // /api/inventory يصبح /inventory
+    ...proxyOnError
   })
 );
 
@@ -118,12 +128,12 @@ app.use(
   createProxyMiddleware({
     target: services.notification,
     changeOrigin: true,
-    pathRewrite: {
-      "^/api/notifications": ""
-    }
+    pathRewrite: { "^/api": "" }, // /api/notifications يصبح /notifications
+    ...proxyOnError
   })
 );
 
+// معالجة المسارات غير الموجودة
 app.use((req, res) => {
   res.status(404).json({
     error: "Route not found",
